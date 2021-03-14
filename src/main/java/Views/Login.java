@@ -5,11 +5,17 @@
  */
 package Views;
 
+import java.awt.event.WindowEvent;
+import Views.Central;
+
 /**
  *
  * @author Pedro
  */
 public class Login extends javax.swing.JFrame {
+    /* FAKE DATABASE */
+    String storagedUsername = "pedrorubinger";
+    String storagedPassword = "pedro";
 
     /**
      * Creates new form Login
@@ -18,6 +24,25 @@ public class Login extends javax.swing.JFrame {
         initComponents();
     }
 
+    public void handleLogin() {
+        String username = jTextFieldUsername.getText();
+        String password = new String(jPasswordField.getPassword());
+
+        System.out.println("Login data is:");
+        System.out.println("Username:" + username);
+        System.out.println("Password:" + password);
+        
+        if (username.equals(storagedUsername) && password.equals(storagedPassword)) {
+            System.out.println("The user is authenticated.");
+            
+            Central central = new Central();
+            
+            central.setVisible(true);
+            this.dispose();
+            // this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -58,8 +83,11 @@ public class Login extends javax.swing.JFrame {
         jLabel1.setText("JPedidos");
 
         jButtonSignIn.setText("Sign In");
-
-        jPasswordField.setText("jPasswordField1");
+        jButtonSignIn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSignInActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -120,6 +148,10 @@ public class Login extends javax.swing.JFrame {
     private void jTextFieldUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldUsernameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldUsernameActionPerformed
+
+    private void jButtonSignInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSignInActionPerformed
+        this.handleLogin();
+    }//GEN-LAST:event_jButtonSignInActionPerformed
 
     /**
      * @param args the command line arguments

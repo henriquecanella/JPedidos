@@ -10,11 +10,26 @@ package Models;
  * @author henrique
  */
 public class Order {
+
+    /**
+     * @return the order_total
+     */
+    public float getOrder_total() {
+        return order_total;
+    }
+
+    /**
+     * @param order_total the order_total to set
+     */
+    public void setOrder_total(float order_total) {
+        this.order_total = order_total;
+    }
     private int order_id;
     private int order_amount;
     private String order_customer_name;
     private String order_customer_phone;
     private int user_id;
+    private float order_total;
     
     public Order(){
     }

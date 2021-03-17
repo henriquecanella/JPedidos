@@ -20,6 +20,7 @@ CREATE table orders (
     order_amount INT NOT NULL,
     order_customer_name VARCHAR(45) NOT NULL,
     order_customer_phone VARCHAR(45) NOT NULL,
+    order_total DECIMAL(10,2) NOT NULL,
     user_id INT NOT NULL,
     PRIMARY KEY(order_id),
     FOREIGN KEY(user_id) REFERENCES users(user_id)

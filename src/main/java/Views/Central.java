@@ -14,15 +14,21 @@ public class Central extends javax.swing.JFrame {
     /**
      * Creates new form Central
      */
-    public Central() {
+    public Central() {}
+    public Central(String userRole) {
         initComponents();
-        
-        Product productsScreen = new Product();
-        User includeUserScreen = new User();
-        // Order orderScreen = new Oder();
-        // this.jTabbedPane.setLayout(new GridLayout(1, 1));
-        this.jTabbedPane.addTab("Products", productsScreen.getContentPane());
-        this.jTabbedPane.addTab("Users", includeUserScreen.getContentPane());
+
+        if (!userRole.equals("") || userRole != null) {
+            if (userRole.toLowerCase().equals("admin")) {
+                User manageUsersScreen = new User();
+                this.jTabbedPane.addTab("Users", manageUsersScreen.getContentPane());
+            } else if (userRole.toLowerCase().equals("employee")) {
+                // orders
+            } else if (userRole.toLowerCase().equals("manager")) {
+                Product productsScreen = new Product();
+                this.jTabbedPane.addTab("Products", productsScreen.getContentPane());
+            }
+        }
 
         // this.jTabbedPane.
         // get the number of tabs in this tabbed pane

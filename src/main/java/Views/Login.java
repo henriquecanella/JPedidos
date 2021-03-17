@@ -5,8 +5,14 @@
  */
 package Views;
 
-import java.awt.event.WindowEvent;
-import Views.Central;
+import java.sql.ResultSet;
+
+import Models.User;
+import Controllers.UserDAO;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -27,19 +33,42 @@ public class Login extends javax.swing.JFrame {
     public void handleLogin() {
         String username = jTextFieldUsername.getText();
         String password = new String(jPasswordField.getPassword());
-
-        System.out.println("Login data is:");
-        System.out.println("Username:" + username);
-        System.out.println("Password:" + password);
+        User user = new User();
         
-        if (username.equals(storagedUsername) && password.equals(storagedPassword)) {
-            System.out.println("The user is authenticated.");
+        user.setUser_login(username);
+        user.setUser_password(password);
+
+        UserDAO userController = new UserDAO();
+        ResultSet response = userController.userAuth(user);
+
+        if (response != null) {
+            String userLogin = "";
+            String userPassword = "";
+            String userRole = "";
+
+            try {
+                while (response.next()) {
+                    userLogin = response.getString("user_login");
+                    userPassword = response.getString("user_password");
+                    userRole = response.getString("user_role");
+                }
+            } catch (SQLException ex) {
+                System.out.println("Something went wrong trying to log in:" + ex);
+                // Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
             
-            Central central = new Central();
-            
-            central.setVisible(true);
-            this.dispose();
-            // this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+            if ("".equals(userLogin) || userLogin == null) {
+                // Invalid credentials
+                JOptionPane.showMessageDialog(null, "Your credentials are invalid!", "Error", JOptionPane.ERROR_MESSAGE);
+            } else if (username.equals(userLogin) && password.equals(userPassword)) {
+                Central central = new Central(userRole);
+
+                central.setVisible(true);
+                this.dispose();
+            }
+        } else {
+            System.out.println("Response is null. User not found!");
+            JOptionPane.showMessageDialog(null, "User not found!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
     

@@ -29,19 +29,6 @@ public class Central extends javax.swing.JFrame {
                 this.jTabbedPane.addTab("Products", productsScreen.getContentPane());
             }
         }
-
-        // this.jTabbedPane.
-        // get the number of tabs in this tabbed pane
-        // int count = this.jTabbedPane.getTabCount();
-        
-        /*for (int i=0; i< count; i++) {
-            System.out.println("Title:" + this.jTabbedPane.getTitleAt(i));
-            System.out.println("Icon:" + this.jTabbedPane.getIconAt(i));
-            System.out.println("Tooltip:" + this.jTabbedPane.getToolTipTextAt(i));
-            System.out.println("Enabled:" + this.jTabbedPane.isEnabledAt(i));
-            System.out.println("Mnemonic:" + this.jTabbedPane.getMnemonicAt(i));
-            System.out.println("******************************");
-        }*/
     }
 
     /**

@@ -5,17 +5,57 @@
  */
 package Views;
 
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
+import Controllers.UserDAO;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  *
  * @author Pedro
  */
 public class User extends javax.swing.JFrame {
+    UserDAO userController = new UserDAO();
 
     /**
      * Creates new form IncludeUser
      */
     public User() {
         initComponents();
+        this.refreshUsersTable("init");
+    }
+
+    public void refreshUsersTable(String mode) {
+        DefaultTableModel model = (DefaultTableModel) jTableUsers.getModel();
+
+        ArrayList<Models.User> usersList = userController.listUsers();
+        // int rows = model.getRowCount();
+
+        model.setRowCount(0);
+        model.getDataVector().removeAllElements();
+        model.fireTableDataChanged();
+
+        for (int i = 0; i < usersList.size(); i++) {
+            model.addRow(new Object[]{
+                usersList.get(i).getUser_id(),
+                usersList.get(i).getUser_name(),
+                usersList.get(i).getUser_mail(),
+                usersList.get(i).getUser_login(),
+                usersList.get(i).getUser_role()
+            });
+        }
+        
+        usersList.clear();
+    }
+    
+    public void clearFields() {
+        jTextFieldName.setText("");
+        jTextFieldEmail.setText("");
+        jTextFieldUsername.setText("");
+        jPasswordField.setText("");
     }
 
     /**
@@ -68,7 +108,7 @@ public class User extends javax.swing.JFrame {
         jLabelRole.setForeground(new java.awt.Color(97, 97, 97));
         jLabelRole.setText("Role");
 
-        jComboBoxRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Employee", "Manager" }));
 
         jLabelNewUserTitle.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabelNewUserTitle.setText("Manage Users");
@@ -147,29 +187,36 @@ public class User extends javax.swing.JFrame {
 
         jButtonRemoveUser.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButtonRemoveUser.setText("Remove");
+        jButtonRemoveUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRemoveUserActionPerformed(evt);
+            }
+        });
 
         jButtonUpdateUser.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButtonUpdateUser.setText("Update");
 
         jButtonCreateUser.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButtonCreateUser.setText("Create");
+        jButtonCreateUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCreateUserActionPerformed(evt);
+            }
+        });
 
         jTableUsers.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "ID", "Name", "Email", "Username", "Role"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, true, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -230,6 +277,48 @@ public class User extends javax.swing.JFrame {
     private void jPasswordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jPasswordFieldActionPerformed
+
+    private void jButtonCreateUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCreateUserActionPerformed
+        String name = jTextFieldName.getText();
+        String email = jTextFieldEmail.getText();
+        String username = jTextFieldUsername.getText();
+        String password = new String(jPasswordField.getPassword());
+        String role = (String) jComboBoxRole.getSelectedItem();
+
+        if (name.equals("") || email.equals("") || username.equals("") || password.equals("") || role.equals("")) {
+            JOptionPane.showMessageDialog(null, "Some fields require your attention!", "Fill in all the fields!", JOptionPane.ERROR_MESSAGE);
+        } else {
+            Models.User user = new Models.User();
+            
+            user.setUser_name(name);
+            user.setUser_login(username);
+            user.setUser_mail(email);
+            user.setUser_password(password);
+            user.setUser_role(role.toLowerCase());
+
+            userController.createUser(user);
+            JOptionPane.showMessageDialog(null, "The user was successfully created!", "Success", JOptionPane.PLAIN_MESSAGE);
+            this.clearFields();
+            this.refreshUsersTable("add");
+        }
+    }//GEN-LAST:event_jButtonCreateUserActionPerformed
+
+    private void jButtonRemoveUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoveUserActionPerformed
+        //DefaultTableModel model = (DefaultTableModel) jTableUsers.getModel();
+        int row = jTableUsers.getSelectedRow();
+        
+        String id = jTableUsers.getValueAt(row, 0).toString();
+        String name = jTableUsers.getValueAt(row, 1).toString();
+        String email = jTableUsers.getValueAt(row, 2).toString();
+        String username = jTableUsers.getValueAt(row, 3).toString();
+        String role = jTableUsers.getValueAt(row, 4).toString();
+        
+        System.out.println("id: " + id);
+        System.out.println("name: " + name);
+        System.out.println("email: " + email);
+        System.out.println("username: " + username);
+        System.out.println("role: " + role);
+    }//GEN-LAST:event_jButtonRemoveUserActionPerformed
 
     /**
      * @param args the command line arguments

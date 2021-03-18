@@ -28,6 +28,23 @@ public class User extends javax.swing.JFrame {
         this.refreshUsersTable("init");
     }
 
+    public boolean checkIfUserExists(String email, String login) {
+        ArrayList<Models.User> usersList = userController.listUsers();
+
+        if (usersList.size() <= 0) {
+            return false;
+        }
+        
+        for(int i = 0; i < usersList.size(); i++) {
+            if (usersList.get(i).getUser_login().equals(login) || usersList.get(i).getUser_mail().equals(email)) {
+                return true;
+            }
+        }
+
+        usersList.clear();
+        return false;
+    }
+    
     public void refreshUsersTable(String mode) {
         DefaultTableModel model = (DefaultTableModel) jTableUsers.getModel();
 
@@ -227,6 +244,7 @@ public class User extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTableUsers.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(jTableUsers);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -287,6 +305,8 @@ public class User extends javax.swing.JFrame {
 
         if (name.equals("") || email.equals("") || username.equals("") || password.equals("") || role.equals("")) {
             JOptionPane.showMessageDialog(null, "Some fields require your attention!", "Fill in all the fields!", JOptionPane.ERROR_MESSAGE);
+        } else if(this.checkIfUserExists(email, username)) {
+            JOptionPane.showMessageDialog(null, "This user already exists!", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             Models.User user = new Models.User();
             
@@ -304,20 +324,22 @@ public class User extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCreateUserActionPerformed
 
     private void jButtonRemoveUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoveUserActionPerformed
-        //DefaultTableModel model = (DefaultTableModel) jTableUsers.getModel();
+        // DefaultTableModel model = (DefaultTableModel) jTableUsers.getModel();
         int row = jTableUsers.getSelectedRow();
-        
         String id = jTableUsers.getValueAt(row, 0).toString();
-        String name = jTableUsers.getValueAt(row, 1).toString();
-        String email = jTableUsers.getValueAt(row, 2).toString();
-        String username = jTableUsers.getValueAt(row, 3).toString();
-        String role = jTableUsers.getValueAt(row, 4).toString();
+        // String name = jTableUsers.getValueAt(row, 1).toString();
+        // String email = jTableUsers.getValueAt(row, 2).toString();
+        // String username = jTableUsers.getValueAt(row, 3).toString();
+        // String role = jTableUsers.getValueAt(row, 4).toString();
         
-        System.out.println("id: " + id);
-        System.out.println("name: " + name);
-        System.out.println("email: " + email);
-        System.out.println("username: " + username);
-        System.out.println("role: " + role);
+        Models.User user = new Models.User();
+        
+        user.setUser_id(Integer.parseInt(id));
+        
+        userController.deleteUser(user);
+        this.refreshUsersTable("delete");
+        this.clearFields();
+        JOptionPane.showMessageDialog(null, "The user was successfully deleted!", "Success", JOptionPane.PLAIN_MESSAGE);
     }//GEN-LAST:event_jButtonRemoveUserActionPerformed
 
     /**

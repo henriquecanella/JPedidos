@@ -28,15 +28,32 @@ public class User extends javax.swing.JFrame {
         this.refreshUsersTable("init");
     }
 
-    public boolean checkIfUserExists(String email, String login) {
+    public boolean checkIfLoginExists(String login) {
         ArrayList<Models.User> usersList = userController.listUsers();
 
         if (usersList.size() <= 0) {
             return false;
         }
         
-        for(int i = 0; i < usersList.size(); i++) {
-            if (usersList.get(i).getUser_login().equals(login) || usersList.get(i).getUser_mail().equals(email)) {
+        for (int i = 0; i < usersList.size(); i++) {
+            if (usersList.get(i).getUser_login().equals(login)) {
+                return true;
+            }
+        }
+
+        usersList.clear();
+        return false;
+    }
+    
+    public boolean checkIfEmailExists(String email) {
+        ArrayList<Models.User> usersList = userController.listUsers();
+
+        if (usersList.size() <= 0) {
+            return false;
+        }
+        
+        for (int i = 0; i < usersList.size(); i++) {
+            if (usersList.get(i).getUser_mail().equals(email)) {
                 return true;
             }
         }
@@ -212,6 +229,11 @@ public class User extends javax.swing.JFrame {
 
         jButtonUpdateUser.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButtonUpdateUser.setText("Update");
+        jButtonUpdateUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonUpdateUserActionPerformed(evt);
+            }
+        });
 
         jButtonCreateUser.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButtonCreateUser.setText("Create");
@@ -305,7 +327,7 @@ public class User extends javax.swing.JFrame {
 
         if (name.equals("") || email.equals("") || username.equals("") || password.equals("") || role.equals("")) {
             JOptionPane.showMessageDialog(null, "Some fields require your attention!", "Fill in all the fields!", JOptionPane.ERROR_MESSAGE);
-        } else if(this.checkIfUserExists(email, username)) {
+        } else if (this.checkIfEmailExists(email) || this.checkIfLoginExists(username)) {
             JOptionPane.showMessageDialog(null, "This user already exists!", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             Models.User user = new Models.User();
@@ -341,6 +363,75 @@ public class User extends javax.swing.JFrame {
         this.clearFields();
         JOptionPane.showMessageDialog(null, "The user was successfully deleted!", "Success", JOptionPane.PLAIN_MESSAGE);
     }//GEN-LAST:event_jButtonRemoveUserActionPerformed
+
+    private void jButtonUpdateUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateUserActionPerformed
+        int row = jTableUsers.getSelectedRow();
+        String id = jTableUsers.getValueAt(row, 0).toString();
+        String name = jTableUsers.getValueAt(row, 1).toString();
+        String email = jTableUsers.getValueAt(row, 2).toString();
+        String username = jTableUsers.getValueAt(row, 3).toString();
+        String role = jTableUsers.getValueAt(row, 4).toString();
+        String password = "";
+        boolean hasInvalidData = false;
+        ArrayList<Models.User> usersList = userController.listUsers();
+
+        if ((!role.equals("manager") && !role.equals("admin") && !role.equals("employee"))) {
+            JOptionPane.showMessageDialog(null, "Invalid role! Allowed roles: admin, employee, manager", "Invalid Role!", JOptionPane.ERROR_MESSAGE);
+            usersList.clear();
+            this.refreshUsersTable("update");
+        } else if (name.equals("") || email.equals("") || username.equals("") || role.equals("")) {
+            JOptionPane.showMessageDialog(null, "Some fields require your attention!", "Fill in all the fields!", JOptionPane.ERROR_MESSAGE);
+            usersList.clear();
+            this.refreshUsersTable("update");
+        } else {
+            String originalLogin = "";
+            String originalEmail = "";
+
+            for (int i = 0; i < usersList.size(); i++) {
+                int userId = usersList.get(i).getUser_id();
+
+                if (userId == Integer.parseInt(id)) {
+                    password = usersList.get(i).getUser_password();
+                    originalLogin = usersList.get(i).getUser_login();
+                    originalEmail = usersList.get(i).getUser_mail();
+                    break;
+                }
+            }
+            
+            if (!originalLogin.equals(username)) {
+                if (this.checkIfLoginExists(username)) {
+                    hasInvalidData = true;
+                }
+            }
+            
+            if (!originalEmail.equals(email)) {
+                if (this.checkIfEmailExists(email)) {
+                    hasInvalidData = true;
+                }
+            }
+
+            if (hasInvalidData) {
+                JOptionPane.showMessageDialog(null, "Email or username already exists!", "Invalid Data", JOptionPane.ERROR_MESSAGE);
+                usersList.clear();
+                this.refreshUsersTable("update");
+            } else {
+                Models.User user = new Models.User(
+                    Integer.parseInt(id),
+                    name,
+                    username,
+                    password,
+                    email,
+                    role.toLowerCase()
+                );
+                usersList.clear();
+
+                userController.alterarUser(user);
+                this.refreshUsersTable("update");
+                this.clearFields();
+                JOptionPane.showMessageDialog(null, "The user was successfully updated!", "Success", JOptionPane.PLAIN_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_jButtonUpdateUserActionPerformed
 
     /**
      * @param args the command line arguments

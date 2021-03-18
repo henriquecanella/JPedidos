@@ -23,7 +23,8 @@ public class Central extends javax.swing.JFrame {
                 User manageUsersScreen = new User();
                 this.jTabbedPane.addTab("Users", manageUsersScreen.getContentPane());
             } else if (userRole.toLowerCase().equals("employee")) {
-                // orders
+                Order ordersScreen = new Order();
+                this.jTabbedPane.addTab("Orders", ordersScreen.getContentPane());
             } else if (userRole.toLowerCase().equals("manager")) {
                 Product productsScreen = new Product();
                 this.jTabbedPane.addTab("Products", productsScreen.getContentPane());

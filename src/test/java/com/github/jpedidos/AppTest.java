@@ -3,12 +3,29 @@ package com.github.jpedidos;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Properties;
+
+import javax.swing.UIManager;
+import javax.swing.text.View;
+
 import org.junit.jupiter.api.Test;
 
+import Controllers.UserDAO;
+import Main.Main;
 import Models.Order;
 import Models.OrderProduct;
 import Models.Product;
 import Models.User;
+import Utils.JDBCUtil;
+import Views.Central;
+import Views.Login;
 
 public class AppTest {
 	///=====MODELS======
@@ -144,4 +161,122 @@ public class AppTest {
 
 		assertEquals(5.5f, o.getOrder_total());
 	}
+
+	///=====UTILS=====
+	//JDBCUtil
+	@Test
+	public void JDBCUtilInitTest() throws IOException, ClassNotFoundException{
+		JDBCUtil con = new JDBCUtil();
+		String path = System.getProperty("user.dir");
+		File config_file = new File(path + "/src/main/java/Utils/configuracaobd.properties");
+
+		JDBCUtil.init(config_file);
+	}
+
+	// @Test
+	// public void JDBCUtilGetConnectionTest() throws IOException, ClassNotFoundException, SQLException{
+	// 	String path = System.getProperty("user.dir");
+	// 	File config_file = new File(path + "/src/main/java/Utils/configuracaobd.properties");
+
+	// 	JDBCUtil.init(config_file);
+
+	// 	assertEquals(JDBCUtil.getConnection(), Connection.class);
+	// }
+
+	///=====MAIN===
+	//Main
+	@Test
+	public void mainTest(){
+		Main m = new Main();
+		m.main(null);
+	}
+	
+	///=====VIEWS=====
+	//Central
+	@Test
+	public void centralTest(){
+		Central c = new Central();
+	}
+
+	@Test
+	public void centralAdminTest(){
+		Central m = new Central("admin");
+	}
+
+	@Test
+	public void centralEmployeeTest(){
+		Central m = new Central("Manager");
+	}
+
+	@Test
+	public void centralManagerTest(){
+		Central m = new Central("Employee");
+	}
+
+	@Test
+	public void centralNonMatchingTest(){
+		Central m = new Central("Type4");
+	}
+
+	@Test
+	public void centralTestNull(){
+		assertThrows(Exception.class, () -> new Central(null));
+	}
+
+	@Test
+	public void centralTestVazio(){
+		new Central("");
+	}
+
+	@Test
+	public void centralMainTest(){
+		new Central("");
+		String[] s = {""};
+		Central.main(s);
+	}
+
+	//User
+	@Test
+	public void userViewCheckLoginFalseTest() {
+		Views.User vu = new Views.User();
+
+		assertFalse(vu.checkIfLoginExists("João"));		
+	}
+
+	@Test
+	public void userViewCheckLoginTrueTest() {
+		Views.User vu = new Views.User();
+
+		assertTrue(vu.checkIfLoginExists("admin"));	
+	}
+	
+	@Test
+	public void userViewCheckEmailFalseTest() {
+		Views.User vu = new Views.User();
+
+		assertFalse(vu.checkIfEmailExists("joao@email.com"));		
+	}
+
+	@Test
+	public void userViewCheckEmailTrueTest() {
+		Views.User vu = new Views.User();
+
+		assertTrue(vu.checkIfEmailExists("admin@email.com"));	
+	}
+
+	// @Test
+	// public void userViewCreateUserTrueTest() {
+	// 	Views.User vu = new Views.User();
+	// 	java.awt.event.ActionEvent e = new java.awt.event.ActionEvent(this, 0, null);
+
+	// 	vu.jButtonCreateUserActionPerformed(e);	
+	// }
+
+	//Login
+	@Test
+	public void loginHandleTest() {
+
+	}
+
+	///=====CONTROLERS=====
 }

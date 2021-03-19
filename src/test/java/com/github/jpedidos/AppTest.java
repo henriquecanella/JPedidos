@@ -1,22 +1,20 @@
 package com.github.jpedidos;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Properties;
 
-import javax.swing.UIManager;
-import javax.swing.text.View;
+import javax.swing.JTextField;
 
 import org.junit.jupiter.api.Test;
 
+import Controllers.OrderDAO;
+import Controllers.ProductDAO;
 import Controllers.UserDAO;
 import Main.Main;
 import Models.Order;
@@ -200,37 +198,37 @@ public class AppTest {
 
 	@Test
 	public void centralAdminTest(){
-		Central m = new Central("admin");
+		Central m = new Central("admin", "0");
 	}
 
 	@Test
 	public void centralEmployeeTest(){
-		Central m = new Central("Manager");
+		Central m = new Central("Manager", "0");
 	}
 
 	@Test
 	public void centralManagerTest(){
-		Central m = new Central("Employee");
+		Central m = new Central("Employee", "0");
 	}
 
 	@Test
 	public void centralNonMatchingTest(){
-		Central m = new Central("Type4");
+		Central m = new Central("Type4", "0");
 	}
 
 	@Test
 	public void centralTestNull(){
-		assertThrows(Exception.class, () -> new Central(null));
+		assertThrows(Exception.class, () -> new Central(null, "0"));
 	}
 
 	@Test
 	public void centralTestVazio(){
-		new Central("");
+		new Central("", "0");
 	}
 
 	@Test
 	public void centralMainTest(){
-		new Central("");
+		new Central("", "0");
 		String[] s = {""};
 		Central.main(s);
 	}
@@ -264,19 +262,93 @@ public class AppTest {
 		assertTrue(vu.checkIfEmailExists("admin@email.com"));	
 	}
 
-	// @Test
-	// public void userViewCreateUserTrueTest() {
-	// 	Views.User vu = new Views.User();
-	// 	java.awt.event.ActionEvent e = new java.awt.event.ActionEvent(this, 0, null);
+	@Test
+	public void userViewCreateUserTrueTest() {
+		Views.User vu = new Views.User();
 
-	// 	vu.jButtonCreateUserActionPerformed(e);	
-	// }
+		vu.clearFields();	
+	}
 
 	//Login
 	@Test
 	public void loginHandleTest() {
+		Login log = new Login();
 
+		log.handleLogin();
 	}
 
+	//Order
+
 	///=====CONTROLERS=====
+	//UserDAO
+	@Test
+	public void userDAOUserAuthTest(){
+		UserDAO userDAO = new UserDAO();
+		User u = new User();
+
+		u.setUser_name("Joao");
+		u.setUser_login("joaovitor");
+		u.setUser_password("minhasenha");
+		u.setUser_mail("joao@email.com");
+		u.setUser_role("admin");
+
+		userDAO.userAuth(u);
+	}
+
+	@Test
+	public void userDAOCreateUserTest(){
+		UserDAO userDAO = new UserDAO();
+		User u = new User();
+
+		u.setUser_name("Joao");
+		u.setUser_login("joaovitor");
+		u.setUser_password("minhasenha");
+		u.setUser_mail("joao@email.com");
+		u.setUser_role("admin");
+
+		userDAO.createUser(u);
+	}
+
+	@Test
+	public void userDAOAlterUserTest(){
+		UserDAO userDAO = new UserDAO();
+		User u = new User();
+
+		u.setUser_name("Joao");
+		u.setUser_login("joaovitor");
+		u.setUser_password("minhasenha");
+		u.setUser_mail("joao@email.com");
+		u.setUser_role("admin");
+
+		userDAO.alterarUser(u);
+	}
+
+	@Test
+	public void userDAODeleteUserTest(){
+		UserDAO userDAO = new UserDAO();
+		User u = new User();
+
+		u.setUser_name("Joao");
+		u.setUser_login("joaovitor");
+		u.setUser_password("minhasenha");
+		u.setUser_mail("joao@email.com");
+		u.setUser_role("admin");
+
+		userDAO.deleteUser(u);
+	}
+
+	//OrderDAO
+	@Test
+	public void orderDAOCreateTest(){
+		OrderDAO orderDAO = new OrderDAO();
+		Order o = new Order();
+		ArrayList<Product> p_list = new ArrayList<>();
+
+		o.setOrder_customer_name("Customer1");
+		o.setOrder_customer_phone("(16)99999-9999");
+		o.setUser_id(1);
+		o.setOrder_total(5.55f);
+		
+		orderDAO.createOrder(o, p_list);
+	}
 }

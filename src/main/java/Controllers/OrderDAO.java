@@ -43,7 +43,7 @@ public class OrderDAO {
             pstm.setInt(3, order.getUser_id());
             pstm.setFloat(4, order.getOrder_total());
             pstm.execute();
-            
+
             ResultSet rs = pstm.getGeneratedKeys();
             int generatedKey = 0;
             if (rs.next()) {
@@ -53,7 +53,7 @@ public class OrderDAO {
             pstm.close();
             
             for(int n=0;n<productList.size();n++){
-                sql = "insert into order_product(order_id, product_id) valeus(?,?)";
+                sql = "insert into order_product(order_id, product_id) values(?,?)";
                 pstm = connection.prepareStatement(sql);
                 pstm.setInt(1, generatedKey);
                 pstm.setInt(2, productList.get(n).getProduct_id());

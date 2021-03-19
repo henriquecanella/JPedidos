@@ -45,12 +45,14 @@ public class Login extends javax.swing.JFrame {
             String userLogin = "";
             String userPassword = "";
             String userRole = "";
+            String userId = "";
 
             try {
                 while (response.next()) {
                     userLogin = response.getString("user_login");
                     userPassword = response.getString("user_password");
                     userRole = response.getString("user_role");
+                    userId = response.getString("user_id");
                 }
             } catch (SQLException ex) {
                 System.out.println("Something went wrong trying to log in:" + ex);
@@ -61,7 +63,7 @@ public class Login extends javax.swing.JFrame {
                 // Invalid credentials
                 JOptionPane.showMessageDialog(null, "Your credentials are invalid!", "Error", JOptionPane.ERROR_MESSAGE);
             } else if (username.equals(userLogin) && password.equals(userPassword)) {
-                Central central = new Central(userRole);
+                Central central = new Central(userRole, userId);
 
                 central.setVisible(true);
                 this.dispose();

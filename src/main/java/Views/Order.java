@@ -5,6 +5,7 @@
  */
 package Views;
 
+import Controllers.OrderDAO;
 import Controllers.ProductDAO;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -25,21 +26,24 @@ import javax.swing.event.DocumentListener;
 public class Order extends javax.swing.JFrame {
     ArrayList<JTextField> fieldsArr = new ArrayList<JTextField>();
     ProductDAO productController = new ProductDAO();
-
+    OrderDAO orderController = new OrderDAO();
+    ArrayList<Models.Product> productsList = productController.listProducts();
+    private String userId = "";
+    
     /**
      * Creates new form PrototipoTelaPedidos
      */
-    public Order() {
-        initComponents();       
-        
-        ArrayList<Models.Product> productsList = productController.listProducts();
-        
+    public Order() {}
+    public Order(String userId) {
+        this.userId = userId;
+
+        System.out.println("userId: " + userId);
+        initComponents();        
         insertProduct(productsList);
     }
     
     public float calculateTotalPrice() {
         float total = 0;
-        ArrayList<Models.Product> productsList = productController.listProducts();
 
         for (int i = 0; i < this.fieldsArr.size(); i++) {
             try {
@@ -224,28 +228,64 @@ public class Order extends javax.swing.JFrame {
     private void jButtonSaveOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveOrderActionPerformed
         String customerName = this.jTextFieldCustomerName.getText();
         String customerPhone = this.jTextFieldCustomerPhone.getText();
-        
-        if (this.calculateTotalPrice() == 0) {
+        float total = this.calculateTotalPrice();
+
+        if (total <= 0) {
             JOptionPane.showMessageDialog(
                 null,
                 "You must select at least one product!",
                 "Error!",
                 JOptionPane.ERROR_MESSAGE
             );
+        } else if (customerName.length() > 45 || customerPhone.length() > 45) {
+            JOptionPane.showMessageDialog(
+                null,
+                "Name and phone number must be a maximum of 45 characters each.",
+                "Invalid Customer!",
+                JOptionPane.ERROR_MESSAGE
+            );
         } else if (customerName.equals("") || customerPhone.equals("")) {
             JOptionPane.showMessageDialog(
                 null,
-                "You must provide valid phone and name data!",
-                "Error!",
+                "You must provide a valid phone and name data!",
+                "Invalid Customer!",
                 JOptionPane.ERROR_MESSAGE
             );
         } else {
+            Models.Order order = new Models.Order();
+            ArrayList<Models.Product> selectedProducts = new ArrayList<Models.Product>();
+            
+            // order.setOrder_amount(1);
+            order.setOrder_customer_name(customerName);
+            order.setOrder_customer_phone(customerPhone);
+            order.setOrder_total(total);
+            order.setUser_id(Integer.parseInt(this.userId));
+
+            for (int i = 0; i < this.fieldsArr.size(); i++) {
+                try {
+                    int prodAmount = Integer.parseInt(this.fieldsArr.get(i).getText());
+                    
+                    if (prodAmount > 0) {
+                        selectedProducts.add(this.productsList.get(i));
+                    }
+                } catch (NumberFormatException ex) {
+                    System.out.println("Exception: Invalid format!");
+                }
+            }
+            
+            for (int i = 0; i < selectedProducts.size(); i++) {
+                System.out.println("selectedProduct:" + selectedProducts.get(i).getProduct_name());
+            }
+
+            orderController.createOrder(order, selectedProducts);
             JOptionPane.showMessageDialog(
                 null,
                 "The order was successfully saved!",
                 "Done!",
                 JOptionPane.PLAIN_MESSAGE
             );
+            
+            selectedProducts.clear();
         }
     }//GEN-LAST:event_jButtonSaveOrderActionPerformed
 

@@ -18,7 +18,7 @@ public class Central extends javax.swing.JFrame {
      * Creates new form Central
      */
     public Central() {}
-    public Central(String userRole) {
+    public Central(String userRole, String userId) {
         initComponents();
 
         if (!userRole.equals("") || userRole != null) {
@@ -26,8 +26,8 @@ public class Central extends javax.swing.JFrame {
                 User manageUsersScreen = new User();
                 this.jTabbedPane.addTab("Users", manageUsersScreen.getContentPane());
             } else if (userRole.toLowerCase().equals("employee")) {
-                Order newOrderScreen = new Order();
-                
+                Order newOrderScreen = new Order(userId);
+
                 newOrderScreen.setLayout(new BorderLayout());
                 this.jTabbedPane.addTab("New Order", newOrderScreen.getContentPane());
                 // this.jTabbedPane.getTabComponentAt(0).setSize(485, 388);

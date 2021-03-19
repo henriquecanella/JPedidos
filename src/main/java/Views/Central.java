@@ -5,6 +5,9 @@
  */
 package Views;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+
 /**
  *
  * @author Pedro
@@ -23,8 +26,12 @@ public class Central extends javax.swing.JFrame {
                 User manageUsersScreen = new User();
                 this.jTabbedPane.addTab("Users", manageUsersScreen.getContentPane());
             } else if (userRole.toLowerCase().equals("employee")) {
-                Order ordersScreen = new Order();
-                this.jTabbedPane.addTab("Orders", ordersScreen.getContentPane());
+                Order newOrderScreen = new Order();
+                
+                newOrderScreen.setLayout(new BorderLayout());
+                this.jTabbedPane.addTab("New Order", newOrderScreen.getContentPane());
+                // this.jTabbedPane.getTabComponentAt(0).setSize(485, 388);
+                // .setSize(485, 388)
             } else if (userRole.toLowerCase().equals("manager")) {
                 Product productsScreen = new Product();
                 this.jTabbedPane.addTab("Products", productsScreen.getContentPane());

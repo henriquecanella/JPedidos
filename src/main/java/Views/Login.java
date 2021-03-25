@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 
 import Models.User;
 import Controllers.UserDAO;
+import java.awt.BorderLayout;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,10 +20,6 @@ import javax.swing.JOptionPane;
  * @author Pedro
  */
 public class Login extends javax.swing.JFrame {
-    /* FAKE DATABASE */
-    String storagedUsername = "pedrorubinger";
-    String storagedPassword = "pedro";
-
     /**
      * Creates new form Login
      */
@@ -34,7 +31,7 @@ public class Login extends javax.swing.JFrame {
         String username = jTextFieldUsername.getText();
         String password = new String(jPasswordField.getPassword());
         User user = new User();
-        
+
         user.setUser_login(username);
         user.setUser_password(password);
 
@@ -56,24 +53,31 @@ public class Login extends javax.swing.JFrame {
                 }
             } catch (SQLException ex) {
                 System.out.println("Something went wrong trying to log in:" + ex);
-                // Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
             if ("".equals(userLogin) || userLogin == null) {
                 // Invalid credentials
                 JOptionPane.showMessageDialog(null, "Your credentials are invalid!", "Error", JOptionPane.ERROR_MESSAGE);
             } else if (username.equals(userLogin) && password.equals(userPassword)) {
-                Central central = new Central(userRole, userId);
+                if (userRole.equals("employee")) {
+                    Order newOrderScreen = new Order(userId);
 
-                central.setVisible(true);
-                this.dispose();
+                    newOrderScreen.setLayout(new BorderLayout());
+                    newOrderScreen.setVisible(true);
+                    this.dispose();
+                } else {
+                    Central central = new Central(userRole, userId);
+
+                    central.setVisible(true);
+                    this.dispose();
+                }
             }
         } else {
             System.out.println("Response is null. User not found!");
             JOptionPane.showMessageDialog(null, "User not found!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

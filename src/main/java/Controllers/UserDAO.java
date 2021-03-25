@@ -167,4 +167,37 @@ public class UserDAO {
         }
     }
 
+    public boolean checkIfEmailExists(String email) {
+        ArrayList<Models.User> usersList = this.listUsers();
+
+        if (usersList.size() <= 0) {
+            return false;
+        }
+        
+        for (int i = 0; i < usersList.size(); i++) {
+            if (usersList.get(i).getUser_mail().equals(email)) {
+                return true;
+            }
+        }
+
+        usersList.clear();
+        return false;
+    }
+    
+    public boolean checkIfLoginExists(String login) {
+        ArrayList<Models.User> usersList = this.listUsers();
+
+        if (usersList.size() <= 0) {
+            return false;
+        }
+        
+        for (int i = 0; i < usersList.size(); i++) {
+            if (usersList.get(i).getUser_login().equals(login)) {
+                return true;
+            }
+        }
+
+        usersList.clear();
+        return false;
+    }
 }

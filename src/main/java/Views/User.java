@@ -18,7 +18,7 @@ import java.util.Set;
  * @author Pedro
  */
 public class User extends javax.swing.JFrame {
-    UserDAO userController = new UserDAO();
+    UserDAO userDAO = new UserDAO();
 
     /**
      * Creates new form IncludeUser
@@ -28,44 +28,10 @@ public class User extends javax.swing.JFrame {
         this.refreshUsersTable("init");
     }
 
-    public boolean checkIfLoginExists(String login) {
-        ArrayList<Models.User> usersList = userController.listUsers();
-
-        if (usersList.size() <= 0) {
-            return false;
-        }
-        
-        for (int i = 0; i < usersList.size(); i++) {
-            if (usersList.get(i).getUser_login().equals(login)) {
-                return true;
-            }
-        }
-
-        usersList.clear();
-        return false;
-    }
-    
-    public boolean checkIfEmailExists(String email) {
-        ArrayList<Models.User> usersList = userController.listUsers();
-
-        if (usersList.size() <= 0) {
-            return false;
-        }
-        
-        for (int i = 0; i < usersList.size(); i++) {
-            if (usersList.get(i).getUser_mail().equals(email)) {
-                return true;
-            }
-        }
-
-        usersList.clear();
-        return false;
-    }
-    
     public void refreshUsersTable(String mode) {
         DefaultTableModel model = (DefaultTableModel) jTableUsers.getModel();
 
-        ArrayList<Models.User> usersList = userController.listUsers();
+        ArrayList<Models.User> usersList = userDAO.listUsers();
         // int rows = model.getRowCount();
 
         model.setRowCount(0);
@@ -327,7 +293,7 @@ public class User extends javax.swing.JFrame {
 
         if (name.equals("") || email.equals("") || username.equals("") || password.equals("") || role.equals("")) {
             JOptionPane.showMessageDialog(null, "Some fields require your attention!", "Fill in all the fields!", JOptionPane.ERROR_MESSAGE);
-        } else if (this.checkIfEmailExists(email) || this.checkIfLoginExists(username)) {
+        } else if (userDAO.checkIfEmailExists(email) || userDAO.checkIfLoginExists(username)) {
             JOptionPane.showMessageDialog(null, "This user already exists!", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             Models.User user = new Models.User();
@@ -338,7 +304,7 @@ public class User extends javax.swing.JFrame {
             user.setUser_password(password);
             user.setUser_role(role.toLowerCase());
 
-            userController.createUser(user);
+            userDAO.createUser(user);
             JOptionPane.showMessageDialog(null, "The user was successfully created!", "Success", JOptionPane.PLAIN_MESSAGE);
             this.clearFields();
             this.refreshUsersTable("add");
@@ -346,19 +312,14 @@ public class User extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCreateUserActionPerformed
 
     private void jButtonRemoveUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoveUserActionPerformed
-        // DefaultTableModel model = (DefaultTableModel) jTableUsers.getModel();
         int row = jTableUsers.getSelectedRow();
         String id = jTableUsers.getValueAt(row, 0).toString();
-        // String name = jTableUsers.getValueAt(row, 1).toString();
-        // String email = jTableUsers.getValueAt(row, 2).toString();
-        // String username = jTableUsers.getValueAt(row, 3).toString();
-        // String role = jTableUsers.getValueAt(row, 4).toString();
         
         Models.User user = new Models.User();
         
         user.setUser_id(Integer.parseInt(id));
         
-        userController.deleteUser(user);
+        userDAO.deleteUser(user);
         this.refreshUsersTable("delete");
         this.clearFields();
         JOptionPane.showMessageDialog(null, "The user was successfully deleted!", "Success", JOptionPane.PLAIN_MESSAGE);
@@ -373,7 +334,7 @@ public class User extends javax.swing.JFrame {
         String role = jTableUsers.getValueAt(row, 4).toString();
         String password = "";
         boolean hasInvalidData = false;
-        ArrayList<Models.User> usersList = userController.listUsers();
+        ArrayList<Models.User> usersList = userDAO.listUsers();
 
         if ((!role.equals("manager") && !role.equals("admin") && !role.equals("employee"))) {
             JOptionPane.showMessageDialog(null, "Invalid role! Allowed roles: admin, employee, manager", "Invalid Role!", JOptionPane.ERROR_MESSAGE);
@@ -399,13 +360,13 @@ public class User extends javax.swing.JFrame {
             }
             
             if (!originalLogin.equals(username)) {
-                if (this.checkIfLoginExists(username)) {
+                if (userDAO.checkIfLoginExists(username)) {
                     hasInvalidData = true;
                 }
             }
-            
+
             if (!originalEmail.equals(email)) {
-                if (this.checkIfEmailExists(email)) {
+                if (userDAO.checkIfEmailExists(email)) {
                     hasInvalidData = true;
                 }
             }
@@ -425,7 +386,7 @@ public class User extends javax.swing.JFrame {
                 );
                 usersList.clear();
 
-                userController.alterarUser(user);
+                userDAO.alterarUser(user);
                 this.refreshUsersTable("update");
                 this.clearFields();
                 JOptionPane.showMessageDialog(null, "The user was successfully updated!", "Success", JOptionPane.PLAIN_MESSAGE);

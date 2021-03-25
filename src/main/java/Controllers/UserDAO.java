@@ -168,7 +168,7 @@ public class UserDAO {
     }
 
     public boolean checkIfLoginExists(String login) {
-        ArrayList<Models.User> usersList = userController.listUsers();
+        ArrayList<Models.User> usersList = this.listUsers();
 
         if (usersList.size() <= 0) {
             return false;

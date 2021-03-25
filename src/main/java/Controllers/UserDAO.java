@@ -167,4 +167,20 @@ public class UserDAO {
         }
     }
 
+    public boolean checkIfLoginExists(String login) {
+        ArrayList<Models.User> usersList = userController.listUsers();
+
+        if (usersList.size() <= 0) {
+            return false;
+        }
+        
+        for (int i = 0; i < usersList.size(); i++) {
+            if (usersList.get(i).getUser_login().equals(login)) {
+                return true;
+            }
+        }
+
+        usersList.clear();
+        return false;
+    }
 }

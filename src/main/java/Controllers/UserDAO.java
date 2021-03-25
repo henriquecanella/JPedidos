@@ -119,7 +119,30 @@ public class UserDAO {
     }
 
     public void alterarUser(User user) {
-        String sql = "update users set user_name = ?, user_login = ?, user_password = ?, user_email = ?, user_role = ? where user_id = ?";
+
+        String sql = "select user_password from users where user_id = ?";
+
+        try {
+            JDBCUtil.init(config_file);
+            connection = JDBCUtil.getConnection();
+            connection.setAutoCommit(false);
+
+            PreparedStatement pstm = connection.prepareStatement(sql);
+            pstm.setInt(1, user.getUser_id());
+
+            pstm.execute();
+            pstm.close();
+
+        } catch (ClassNotFoundException erro) {
+            System.out.println("Falha ao carregar o driver JDBC." + erro);
+        } catch (IOException erro) {
+            System.out.println("Falha ao carregar o arquivo de configuração." + erro);
+        } catch (SQLException erro) {
+            System.out.println("Falha na conexao, comando sql = " + erro);
+        }
+
+
+        sql = "update users set user_name = ?, user_login = ?, user_password = ?, user_email = ?, user_role = ? where user_id = ?";
         try {
             JDBCUtil.init(config_file);
             connection = JDBCUtil.getConnection();

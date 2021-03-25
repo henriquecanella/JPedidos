@@ -332,6 +332,68 @@ public class User extends javax.swing.JFrame {
         String email = jTableUsers.getValueAt(row, 2).toString();
         String username = jTableUsers.getValueAt(row, 3).toString();
         String role = jTableUsers.getValueAt(row, 4).toString();
+
+        this.updateUser(id, name, wmail, username, role);
+    }//GEN-LAST:event_jButtonUpdateUserActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(User.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(User.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(User.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(User.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new User().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonCreateUser;
+    private javax.swing.JButton jButtonRemoveUser;
+    private javax.swing.JButton jButtonUpdateUser;
+    private javax.swing.JComboBox<String> jComboBoxRole;
+    private javax.swing.JLabel jLabelEmail;
+    private javax.swing.JLabel jLabelName;
+    private javax.swing.JLabel jLabelNewUserTitle;
+    private javax.swing.JLabel jLabelPassword;
+    private javax.swing.JLabel jLabelRole;
+    private javax.swing.JLabel jLabelUsername;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPasswordField jPasswordField;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTableUsers;
+    private javax.swing.JTextField jTextFieldEmail;
+    private javax.swing.JTextField jTextFieldName;
+    private javax.swing.JTextField jTextFieldUsername;
+    // End of variables declaration//GEN-END:variables
+
+    public void updateUser(String id, String name, String email, String username, String role){
+
         String password = "";
         boolean hasInvalidData = false;
         ArrayList<Models.User> usersList = userDAO.listUsers();
@@ -392,61 +454,5 @@ public class User extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "The user was successfully updated!", "Success", JOptionPane.PLAIN_MESSAGE);
             }
         }
-    }//GEN-LAST:event_jButtonUpdateUserActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(User.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(User.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(User.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(User.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new User().setVisible(true);
-            }
-        });
     }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonCreateUser;
-    private javax.swing.JButton jButtonRemoveUser;
-    private javax.swing.JButton jButtonUpdateUser;
-    private javax.swing.JComboBox<String> jComboBoxRole;
-    private javax.swing.JLabel jLabelEmail;
-    private javax.swing.JLabel jLabelName;
-    private javax.swing.JLabel jLabelNewUserTitle;
-    private javax.swing.JLabel jLabelPassword;
-    private javax.swing.JLabel jLabelRole;
-    private javax.swing.JLabel jLabelUsername;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPasswordField jPasswordField;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTableUsers;
-    private javax.swing.JTextField jTextFieldEmail;
-    private javax.swing.JTextField jTextFieldName;
-    private javax.swing.JTextField jTextFieldUsername;
-    // End of variables declaration//GEN-END:variables
 }

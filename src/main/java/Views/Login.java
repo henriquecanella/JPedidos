@@ -38,22 +38,7 @@ public class Login extends javax.swing.JFrame {
         UserDAO userController = new UserDAO();
         ResultSet response = userController.userAuth(user);
 
-        if (response != null) {
-            String userLogin = "";
-            String userPassword = "";
-            String userRole = "";
-            String userId = "";
-
-            try {
-                while (response.next()) {
-                    userLogin = response.getString("user_login");
-                    userPassword = response.getString("user_password");
-                    userRole = response.getString("user_role");
-                    userId = response.getString("user_id");
-                }
-            } catch (SQLException ex) {
-                System.out.println("Something went wrong trying to log in:" + ex);
-            }
+        if (response != null) {          
 
             if ("".equals(userLogin) || userLogin == null) {
                 // Invalid credentials

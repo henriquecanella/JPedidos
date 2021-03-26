@@ -27,24 +27,7 @@ public class User extends javax.swing.JFrame {
         initComponents();
         this.refreshUsersTable("init");
     }
-    
-    public boolean checkIfEmailExists(String email) {
-        ArrayList<Models.User> usersList = userDAO.listUsers();
 
-        if (usersList.size() <= 0) {
-            return false;
-        }
-        
-        for (int i = 0; i < usersList.size(); i++) {
-            if (usersList.get(i).getUser_mail().equals(email)) {
-                return true;
-            }
-        }
-
-        usersList.clear();
-        return false;
-    }
-    
     public void refreshUsersTable(String mode) {
         DefaultTableModel model = (DefaultTableModel) jTableUsers.getModel();
 
@@ -310,7 +293,7 @@ public class User extends javax.swing.JFrame {
 
         if (name.equals("") || email.equals("") || username.equals("") || password.equals("") || role.equals("")) {
             JOptionPane.showMessageDialog(null, "Some fields require your attention!", "Fill in all the fields!", JOptionPane.ERROR_MESSAGE);
-        } else if (this.checkIfEmailExists(email) || userDAO.checkIfLoginExists(username)) {
+        } else if (userDAO.checkIfEmailExists(email) || userDAO.checkIfLoginExists(username)) {
             JOptionPane.showMessageDialog(null, "This user already exists!", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             Models.User user = new Models.User();
@@ -329,13 +312,8 @@ public class User extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCreateUserActionPerformed
 
     private void jButtonRemoveUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoveUserActionPerformed
-        // DefaultTableModel model = (DefaultTableModel) jTableUsers.getModel();
         int row = jTableUsers.getSelectedRow();
         String id = jTableUsers.getValueAt(row, 0).toString();
-        // String name = jTableUsers.getValueAt(row, 1).toString();
-        // String email = jTableUsers.getValueAt(row, 2).toString();
-        // String username = jTableUsers.getValueAt(row, 3).toString();
-        // String role = jTableUsers.getValueAt(row, 4).toString();
         
         Models.User user = new Models.User();
         
@@ -386,9 +364,9 @@ public class User extends javax.swing.JFrame {
                     hasInvalidData = true;
                 }
             }
-            
+
             if (!originalEmail.equals(email)) {
-                if (this.checkIfEmailExists(email)) {
+                if (userDAO.checkIfEmailExists(email)) {
                     hasInvalidData = true;
                 }
             }

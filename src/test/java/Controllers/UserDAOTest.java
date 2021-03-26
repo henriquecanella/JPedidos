@@ -63,4 +63,26 @@ public class UserDAOTest {
 
 		userDAO.deleteUser(u);
 	}
+
+	@Test
+	public void checkEmailExistsTest() {
+		UserDAO uc = new UserDAO();
+
+		assertFalse(uc.checkIfEmailExists("emailnaoexiste@email.com"));
+	}
+
+	@Test
+	public void checkLoginExistsTest() {
+		UserDAO uc = new UserDAO();
+
+		assertFalse(uc.checkIfLoginExists("loginnaoexiste"));
+	}
+
+	@Test
+	public void userAuthTest() {
+		UserDAO uc = new UserDAO();
+		User u = new User(1, "admin", "admin", "admin123", "admin@email.com", "admin");
+
+		uc.userAuth(u);
+	}
 }

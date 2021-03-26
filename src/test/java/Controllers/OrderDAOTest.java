@@ -2,6 +2,7 @@ package Controllers;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
@@ -23,9 +24,9 @@ public class OrderDAOTest {
 		
 		orderDAO.createOrder(o, p_list);
 	}
-  //OrderDAO
+	
 	@Test
-	public void orderDAOCreateListOneItemTest(){
+	public void orderDAOCreateListOneEmptyItemTest(){
 		OrderDAO orderDAO = new OrderDAO();
 		Order o = new Order();
 		ArrayList<Product> p_list = new ArrayList<>();
@@ -39,6 +40,6 @@ public class OrderDAOTest {
 
     p_list.add(p);
 		
-		orderDAO.createOrder(o, p_list);
+	orderDAO.createOrder(o, p_list);
 	}
 }

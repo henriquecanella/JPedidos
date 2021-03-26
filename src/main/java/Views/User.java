@@ -333,7 +333,22 @@ public class User extends javax.swing.JFrame {
         String username = jTableUsers.getValueAt(row, 3).toString();
         String role = jTableUsers.getValueAt(row, 4).toString();
 
-        this.updateUser(id, name, wmail, username, role);
+        switch(this.updateUser(id, name, email, username, role)){
+            case 0:
+                JOptionPane.showMessageDialog(null, "Invalid role! Allowed roles: admin, employee, manager", "Invalid Role!", JOptionPane.ERROR_MESSAGE);
+                break;
+
+            case 1:
+                JOptionPane.showMessageDialog(null, "Some fields require your attention!", "Fill in all the fields!", JOptionPane.ERROR_MESSAGE);
+                break;
+
+            case 2:
+                JOptionPane.showMessageDialog(null, "Email or username already exists!", "Invalid Data", JOptionPane.ERROR_MESSAGE);
+                break;
+            case 3:
+                JOptionPane.showMessageDialog(null, "The user was successfully updated!", "Success", JOptionPane.PLAIN_MESSAGE);
+                break;
+        }
     }//GEN-LAST:event_jButtonUpdateUserActionPerformed
 
     /**
@@ -392,20 +407,20 @@ public class User extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldUsername;
     // End of variables declaration//GEN-END:variables
 
-    public void updateUser(String id, String name, String email, String username, String role){
+    public int updateUser(String id, String name, String email, String username, String role){
 
         String password = "";
         boolean hasInvalidData = false;
         ArrayList<Models.User> usersList = userDAO.listUsers();
 
         if ((!role.equals("manager") && !role.equals("admin") && !role.equals("employee"))) {
-            JOptionPane.showMessageDialog(null, "Invalid role! Allowed roles: admin, employee, manager", "Invalid Role!", JOptionPane.ERROR_MESSAGE);
             usersList.clear();
             this.refreshUsersTable("update");
-        } else if (name.equals("") || email.equals("") || username.equals("") || role.equals("")) {
-            JOptionPane.showMessageDialog(null, "Some fields require your attention!", "Fill in all the fields!", JOptionPane.ERROR_MESSAGE);
+            return 0;
+        } else if (name.equals("") || email.equals("") || username.equals("")) {
             usersList.clear();
             this.refreshUsersTable("update");
+            return 1;
         } else {
             String originalLogin = "";
             String originalEmail = "";
@@ -434,9 +449,9 @@ public class User extends javax.swing.JFrame {
             }
 
             if (hasInvalidData) {
-                JOptionPane.showMessageDialog(null, "Email or username already exists!", "Invalid Data", JOptionPane.ERROR_MESSAGE);
                 usersList.clear();
                 this.refreshUsersTable("update");
+                return 2;
             } else {
                 Models.User user = new Models.User(
                     Integer.parseInt(id),
@@ -451,7 +466,7 @@ public class User extends javax.swing.JFrame {
                 userDAO.alterarUser(user);
                 this.refreshUsersTable("update");
                 this.clearFields();
-                JOptionPane.showMessageDialog(null, "The user was successfully updated!", "Success", JOptionPane.PLAIN_MESSAGE);
+                return 3;
             }
         }
     }

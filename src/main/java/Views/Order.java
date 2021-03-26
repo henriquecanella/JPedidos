@@ -76,11 +76,11 @@ public class Order extends javax.swing.JFrame {
                 checkBox.setPreferredSize(new Dimension(73, 23));
                 textFieldAmount.setSize(27, 10);
                 textFieldAmount.setText("0");
-                
+
                 if (textFieldAmount != null) {
                     fieldsArr.add(textFieldAmount);
                 }
-                
+
                 panelTest.add(checkBox);
                 panelTest.add(labelPrice);
                 panelTest.add(textFieldAmount);
@@ -105,14 +105,15 @@ public class Order extends javax.swing.JFrame {
         jLabelTotalResult = new javax.swing.JLabel();
         jLabelCustomerName = new javax.swing.JLabel();
         jLabelCustomerPhone = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jSeparator2 = new javax.swing.JSeparator();
+        jButtonCalculate = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jSeparator1 = new javax.swing.JSeparator();
-        jSeparator2 = new javax.swing.JSeparator();
-        jButtonCalculate = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -136,6 +137,14 @@ public class Order extends javax.swing.JFrame {
         jLabelCustomerPhone.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabelCustomerPhone.setText("Telefone");
 
+        jButtonCalculate.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jButtonCalculate.setText("Calculate");
+        jButtonCalculate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCalculateActionPerformed(evt);
+            }
+        });
+
         jPanel1.setLayout(new java.awt.GridLayout(1, 0));
 
         jPanel2.setLayout(new java.awt.GridLayout(1, 0));
@@ -155,13 +164,7 @@ public class Order extends javax.swing.JFrame {
 
         jPanel1.add(jPanel2);
 
-        jButtonCalculate.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButtonCalculate.setText("Calculate");
-        jButtonCalculate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonCalculateActionPerformed(evt);
-            }
-        });
+        jScrollPane1.setViewportView(jPanel1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -172,7 +175,6 @@ public class Order extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSeparator1)
                     .addComponent(jSeparator2)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextFieldCustomerName, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -187,7 +189,8 @@ public class Order extends javax.swing.JFrame {
                                 .addComponent(jButtonCalculate, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jButtonSaveOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 209, Short.MAX_VALUE)))
+                        .addGap(0, 202, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -204,8 +207,8 @@ public class Order extends javax.swing.JFrame {
                 .addGap(21, 21, 21)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -337,6 +340,7 @@ public class Order extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelTotalResult;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTextField jTextFieldCustomerName;

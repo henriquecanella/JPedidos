@@ -36,30 +36,24 @@ public class Login extends javax.swing.JFrame {
         user.setUser_password(password);
 
         UserDAO userController = new UserDAO();
-        ResultSet response = userController.userAuth(user);
-
+        User response = userController.userAuth(user);
+        
         if (response != null) {          
+            if (response.getUser_role().equals("employee")) {
+                Order newOrderScreen = new Order(String.valueOf(response.getUser_id()));
 
-            if ("".equals(userLogin) || userLogin == null) {
-                // Invalid credentials
-                JOptionPane.showMessageDialog(null, "Your credentials are invalid!", "Error", JOptionPane.ERROR_MESSAGE);
-            } else if (username.equals(userLogin) && password.equals(userPassword)) {
-                if (userRole.equals("employee")) {
-                    Order newOrderScreen = new Order(userId);
+                newOrderScreen.setLayout(new BorderLayout());
+                newOrderScreen.setVisible(true);
+                this.dispose();
+            } else {
+                Central central = new Central(response.getUser_role(), String.valueOf(response.getUser_id()));
 
-                    newOrderScreen.setLayout(new BorderLayout());
-                    newOrderScreen.setVisible(true);
-                    this.dispose();
-                } else {
-                    Central central = new Central(userRole, userId);
-
-                    central.setVisible(true);
-                    this.dispose();
-                }
+                central.setVisible(true);
+                this.dispose();
             }
         } else {
             System.out.println("Response is null. User not found!");
-            JOptionPane.showMessageDialog(null, "User not found!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Invalid Credentials!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 

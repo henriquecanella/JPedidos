@@ -28,6 +28,8 @@ public class UserDAO {
     ArrayList<User> list = new ArrayList<>();
 
     public User userAuth(User user) {
+        User user2 = new User();
+
         try {
             JDBCUtil.init(config_file);
             connection = JDBCUtil.getConnection();
@@ -41,27 +43,26 @@ public class UserDAO {
             ResultSet rs = pstm.executeQuery();
 
             String userLogin = "";
-            String userPassword = "";
+            //String userPassword = "";
             String userRole = "";
             String userId = "";
+
             if (rs != null) {
                 try {
                     while (rs.next()) {
                         userLogin = rs.getString("user_login");
-                        userPassword = rs.getString("user_password");
+                        //userPassword = rs.getString("user_password");
                         userRole = rs.getString("user_role");
                         userId = rs.getString("user_id");
                     }
-                    User user2 = new User();
-                    user2.setUser_id(Integer.parseInt(userId));
-                    user2.setUser_login(userLogin);
-                    user2.setUser_role(userRole);
                     
+                    if (!userId.equals("")) {
+                        user2.setUser_id(Integer.parseInt(userId));
+                        user2.setUser_login(userLogin);
+                        user2.setUser_role(userRole);
+                    } else return null;
                 } catch (SQLException ex) {
                     System.out.println("Something went wrong trying to log in:" + ex);
-                }
-                if (username.equals(userLogin) && userpassword.equals(userPassword)){
-                    return 
                 }
             }
 
@@ -76,6 +77,7 @@ public class UserDAO {
             return null;
         }
 
+        return user2;
     }
 
     public void createUser(User user) {

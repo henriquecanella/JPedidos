@@ -27,14 +27,19 @@ public class Central extends javax.swing.JFrame {
                 this.jTabbedPane.addTab("Users", manageUsersScreen.getContentPane());
             } else if (userRole.toLowerCase().equals("employee")) {
                 Order newOrderScreen = new Order(userId);
+                ListOrders listOrdersScreen = new ListOrders();
 
                 newOrderScreen.setLayout(new BorderLayout());
                 this.jTabbedPane.addTab("New Order", newOrderScreen.getContentPane());
+                this.jTabbedPane.addTab("List Orders", listOrdersScreen.getContentPane());
                 // this.jTabbedPane.getTabComponentAt(0).setSize(485, 388);
                 // .setSize(485, 388)
             } else if (userRole.toLowerCase().equals("manager")) {
                 Product productsScreen = new Product();
+                ListOrders listOrdersScreen = new ListOrders();
+
                 this.jTabbedPane.addTab("Products", productsScreen.getContentPane());
+                this.jTabbedPane.addTab("List Orders", listOrdersScreen.getContentPane());
             }
         }
     }

@@ -39,6 +39,7 @@ public class Login extends javax.swing.JFrame {
         User response = userController.userAuth(user);
         
         if (response != null) {          
+            /*
             if (response.getUser_role().equals("employee")) {
                 Order newOrderScreen = new Order(String.valueOf(response.getUser_id()));
 
@@ -50,7 +51,11 @@ public class Login extends javax.swing.JFrame {
 
                 central.setVisible(true);
                 this.dispose();
-            }
+            } */
+            Central central = new Central(response.getUser_role(), String.valueOf(response.getUser_id()));
+
+            central.setVisible(true);
+            this.dispose();
         } else {
             System.out.println("Response is null. User not found!");
             JOptionPane.showMessageDialog(null, "Invalid Credentials!", "Error", JOptionPane.ERROR_MESSAGE);

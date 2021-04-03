@@ -75,6 +75,7 @@ public class Order extends javax.swing.JFrame {
                 checkBox.setText(productsList.get(i).getProduct_name());
                 checkBox.setPreferredSize(new Dimension(73, 23));
                 textFieldAmount.setSize(27, 10);
+                textFieldAmount.setMaximumSize(new Dimension(30, 10));
                 textFieldAmount.setText("0");
 
                 if (textFieldAmount != null) {
@@ -145,6 +146,8 @@ public class Order extends javax.swing.JFrame {
             }
         });
 
+        jScrollPane1.setMaximumSize(new java.awt.Dimension(32767, 500));
+
         jPanel1.setLayout(new java.awt.GridLayout(1, 0));
 
         jPanel2.setLayout(new java.awt.GridLayout(1, 0));
@@ -190,7 +193,7 @@ public class Order extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(jButtonSaveOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 202, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(

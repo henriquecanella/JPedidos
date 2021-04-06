@@ -16,12 +16,17 @@ CREATE table users (
 
 DROP TABLE IF EXISTS orders;
 
+SET @@time_zone = 'SYSTEM';
+
 CREATE table orders (
-	order_id INT NOT NULL AUTO_INCREMENT,
+    order_id INT NOT NULL AUTO_INCREMENT,
     order_customer_name VARCHAR(45) NOT NULL,
     order_customer_phone VARCHAR(45) NOT NULL,
     order_total DECIMAL(10,2) NOT NULL,
+    order_status ENUM('opened', 'closed'),
     user_id INT NOT NULL,
+    created_at DATETIME NOT NULL,
+    closed_at DATETIME,
     PRIMARY KEY(order_id),
     FOREIGN KEY(user_id) REFERENCES users(user_id)
 );
@@ -48,5 +53,5 @@ CREATE table order_product(
 INSERT INTO users (user_name, user_login, user_password, user_email, user_role) VALUES ("admin","admin","admin123","admin@email.com","admin");
 INSERT INTO users (user_name, user_login, user_password, user_email, user_role) VALUES ("gerente","gerente","gerente123","gerente@email.com","manager");
 INSERT INTO users (user_name, user_login, user_password, user_email, user_role) VALUES ("user","user","user123","user@email.com","employee");
-INSERT INTO orders (order_amount, order_customer_name, order_customer_phone, user_id, order_total) VALUES (1,"Cleyton", "(11)99999-9999",3, 300);
+INSERT INTO orders (order_amount, order_customer_name, order_customer_phone, user_id, order_total, order_status, created_at) VALUES ("Cleyton", "(11)99999-9999",3, 300, "opened", '2021-03-25 10:10:10');
 INSERT INTO products (product_name, product_description, product_price) VALUES ("Produto 1", "DescriÃ§Ã£o do produto 1", 200.99);

@@ -41,7 +41,7 @@ public class Order extends javax.swing.JFrame {
         initComponents();        
         insertProduct(productsList);
     }
-    
+
     public float calculateTotalPrice() {
         float total = 0;
 

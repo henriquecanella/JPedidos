@@ -46,7 +46,7 @@ public class OrderDAO {
             pstm.setString(2, order.getOrder_customer_phone());
             pstm.setInt(3, order.getUser_id());
             pstm.setFloat(4, order.getOrder_total());
-            pstm.setString(5, "closed");
+            pstm.setString(5, "opened");
             pstm.setTimestamp(6, today);
             pstm.execute();
 

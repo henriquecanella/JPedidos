@@ -38,9 +38,10 @@ public class Product extends javax.swing.JFrame {
         jLabelProdName = new javax.swing.JLabel();
         jTextFieldProdName = new javax.swing.JTextField();
         jLabelProdDescription = new javax.swing.JLabel();
-        jTextFieldProdDescription = new javax.swing.JTextField();
         jLabelProdName1 = new javax.swing.JLabel();
         jTextFieldProdName1 = new javax.swing.JTextField();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -117,12 +118,6 @@ public class Product extends javax.swing.JFrame {
         jLabelProdDescription.setForeground(new java.awt.Color(97, 97, 97));
         jLabelProdDescription.setText("Description");
 
-        jTextFieldProdDescription.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldProdDescriptionActionPerformed(evt);
-            }
-        });
-
         jLabelProdName1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabelProdName1.setForeground(new java.awt.Color(97, 97, 97));
         jLabelProdName1.setText("Price (R$)");
@@ -133,19 +128,23 @@ public class Product extends javax.swing.JFrame {
             }
         });
 
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane3.setViewportView(jTextArea1);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane3)
                     .addComponent(jLabelProdName)
-                    .addComponent(jTextFieldProdName, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldProdName, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
                     .addComponent(jLabelProdDescription)
-                    .addComponent(jTextFieldProdDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelProdName1)
-                    .addComponent(jTextFieldProdName1, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldProdName1, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE))
                 .addContainerGap(40, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -158,8 +157,8 @@ public class Product extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabelProdDescription)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextFieldProdDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabelProdName1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextFieldProdName1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -184,9 +183,8 @@ public class Product extends javax.swing.JFrame {
                                 .addComponent(jButtonUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(38, 38, 38)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 556, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26))
         );
@@ -226,10 +224,6 @@ public class Product extends javax.swing.JFrame {
     private void jTextFieldProdNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldProdNameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldProdNameActionPerformed
-
-    private void jTextFieldProdDescriptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldProdDescriptionActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldProdDescriptionActionPerformed
 
     private void jTextFieldProdName1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldProdName1ActionPerformed
         // TODO add your handling code here:
@@ -281,8 +275,9 @@ public class Product extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTableProducts;
-    private javax.swing.JTextField jTextFieldProdDescription;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextFieldProdName;
     private javax.swing.JTextField jTextFieldProdName1;
     // End of variables declaration//GEN-END:variables

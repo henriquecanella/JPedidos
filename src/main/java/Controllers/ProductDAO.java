@@ -62,4 +62,34 @@ public class ProductDAO {
             return null;
         }
     }
+    
+    public int createProduct(Product p){
+        sql = "insert into products (product_name, product_description, product_price) values (?,?,?)";
+        
+        if(p.getProduct_name()!= null && p.getProduct_description() != null){
+            try {
+            JDBCUtil.init(config_file);
+            connection = JDBCUtil.getConnection();
+            connection.setAutoCommit(false);
+
+            PreparedStatement pstm = connection.prepareStatement(sql);
+            pstm.setString(1, p.getProduct_name());
+            pstm.setString(2, p.getProduct_description());
+            pstm.setFloat(3, p.getProduct_price());
+
+            pstm.execute();
+            pstm.close();
+
+            } catch (ClassNotFoundException erro) {
+                System.out.println("Falha ao carregar o driver JDBC." + erro);
+            } catch (IOException erro) {
+                System.out.println("Falha ao carregar o arquivo de configuração." + erro);
+            } catch (SQLException erro) {
+                System.out.println("Falha na conexao, comando sql = " + erro);
+            }
+        } else{
+            return 1;
+        }
+        return 0;
+    }
 }

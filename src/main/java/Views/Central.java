@@ -7,6 +7,9 @@ package Views;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  *
@@ -34,6 +37,21 @@ public class Central extends javax.swing.JFrame {
                 this.jTabbedPane.addTab("List Orders", listOrdersScreen.getContentPane());
                 // this.jTabbedPane.getTabComponentAt(0).setSize(485, 388);
                 // .setSize(485, 388)
+                
+                this.jTabbedPane.addChangeListener(new ChangeListener() {
+                    @Override
+                    public void stateChanged(ChangeEvent e) {
+                        if (e.getSource() instanceof JTabbedPane) {
+                            JTabbedPane pane = (JTabbedPane) e.getSource();
+
+                            if (pane.getTitleAt(pane.getSelectedIndex()).equals("List Orders")) {
+                                listOrdersScreen.refreshOrdersTable("refresh");
+                            }
+                            // System.out.println("Selected pane: " + pane.getTitleAt(pane.getSelectedIndex()));
+                            // System.out.println("Selected paneNo : " + pane.getSelectedIndex());
+                        }
+                    }
+                });
             } else if (userRole.toLowerCase().equals("manager")) {
                 Product productsScreen = new Product();
                 ListOrders listOrdersScreen = new ListOrders();
@@ -91,6 +109,7 @@ public class Central extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Central.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */

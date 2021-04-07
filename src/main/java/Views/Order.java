@@ -292,6 +292,7 @@ public class Order extends javax.swing.JFrame {
             );
             
             selectedProducts.clear();
+            // new ListOrders().refreshOrdersTable("refresh");
         }
     }//GEN-LAST:event_jButtonSaveOrderActionPerformed
 

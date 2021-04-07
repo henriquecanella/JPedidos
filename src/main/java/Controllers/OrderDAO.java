@@ -8,6 +8,7 @@ package Controllers;
 import Models.Order;
 import Models.OrderProduct;
 import Models.Product;
+import Models.User;
 import Utils.JDBCUtil;
 import java.io.File;
 import java.io.IOException;
@@ -29,19 +30,24 @@ public class OrderDAO {
     String sql;
     PreparedStatement pstm;
     ResultSet rs;
-    
+    ArrayList<Order> list = new ArrayList<>();
+
     public void createOrder(Order order, ArrayList<Product> productList){
         try {
             JDBCUtil.init(config_file);
             connection = JDBCUtil.getConnection();
             connection.setAutoCommit(false);
-
-            sql = "insert into orders(order_customer_name, order_customer_phone, user_id, order_total) values(?, ?, ?, ?)";
+            
+            java.sql.Timestamp today = new java.sql.Timestamp(new java.util.Date().getTime());
+            
+            sql = "insert into orders(order_customer_name, order_customer_phone, user_id, order_total, order_status, created_at) values(?, ?, ?, ?, ?, ?)";
             pstm = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             pstm.setString(1, order.getOrder_customer_name());
             pstm.setString(2, order.getOrder_customer_phone());
             pstm.setInt(3, order.getUser_id());
             pstm.setFloat(4, order.getOrder_total());
+            pstm.setString(5, "closed");
+            pstm.setTimestamp(6, today);
             pstm.execute();
 
             ResultSet rs = pstm.getGeneratedKeys();
@@ -68,6 +74,45 @@ public class OrderDAO {
             System.out.println("Falha ao carregar o arquivo de configuração." + erro);
         } catch (SQLException erro) {
             System.out.println("Falha na conexao, comando sql = " + erro);
+        }
+    }
+    
+    public ArrayList<Order> listOrders() {
+        String sql = "select * from orders";
+        try {
+            JDBCUtil.init(config_file);
+            connection = JDBCUtil.getConnection();
+            connection.setAutoCommit(false);
+
+            PreparedStatement pstm = connection.prepareStatement(sql);
+            ResultSet rs = pstm.executeQuery();
+
+            while (rs.next()) {
+                Order order = new Order();
+                order.setUser_id(rs.getInt("user_id"));
+                // order.setCreated_at(rs.getString("created_at"));
+                // order.setClosed_at(rs.getString("closed_at"));
+                order.setOrder_status(rs.getString("order_status"));
+                // order.setOrder_amount(rs.getInt("order_amount"));
+                order.setOrder_customer_name(rs.getString("order_customer_name"));
+                order.setOrder_customer_phone(rs.getString("order_customer_phone"));
+                order.setOrder_id(rs.getInt("order_id"));
+                order.setOrder_total(rs.getFloat("order_total"));
+
+                list.add(order);
+            }
+
+            return list;
+
+        } catch (ClassNotFoundException erro) {
+            System.out.println("Falha ao carregar o driver JDBC." + erro);
+            return null;
+        } catch (IOException erro) {
+            System.out.println("Falha ao carregar o arquivo de configuração." + erro);
+            return null;
+        } catch (SQLException erro) {
+            System.out.println("Falha na conexao, comando sql = " + erro);
+            return null;
         }
     }
 }

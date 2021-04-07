@@ -10,14 +10,17 @@ public class OrderTest {
   //Order
   @Test
   public void orderConstructorTest(){
-    Order o = new Order(0, 2, "Joao da Silva", "(16)99999-9999", 5);
+    // Order o = new Order(0, 2, "Joao da Silva", "(16)99999-9999", 5);
+    Order o = new Order(1, "Joao da Silva", "99999-9999", 1, "open", "2021-03-25 10:10:10", "2021-03-25 13:30:38");
     
     assertEquals(
-    "0\n" + 
-    "2\n" + 
-    "Joao da Silva\n" +
-    "(16)99999-9999\n" +
-    "5\n"
+    "1\n" + 
+    "Joao da Silva\n" + 
+    "99999-9999\n" +
+    "1\n" +
+    "open\n" +
+    "2021-03-25 10:10:10\n" +
+    "2021-03-25 13:30:38\n"
     , o.toString()
     );
   }
@@ -26,29 +29,26 @@ public class OrderTest {
   public void orderSettersTest(){
     Order o = new Order();
     
-    o.setOrder_id(0);
-    o.setOrder_amount(2);
+    o.setOrder_id(1);
     o.setOrder_customer_name("Joao da Silva");
-    o.setOrder_customer_phone("(16)99999-9999");
+    o.setOrder_customer_phone("99999-9999");
+    o.setOrder_total(500f);
     o.setUser_id(5);
+    o.setOrder_status("closed");
+    o.setCreated_at("2021-03-25 10:10:10");
+    o.setClosed_at("2021-03-25 13:30:38");
     
     assertEquals(
-    "0\n" + 
-    "2\n" + 
-    "Joao da Silva\n" +
-    "(16)99999-9999\n" +
-    "5\n"
+    "1\n" + 
+    "Joao da Silva\n" + 
+    "99999-9999\n" +
+    "5\n" +
+    "closed\n" +
+    "2021-03-25 10:10:10\n" +
+    "2021-03-25 13:30:38\n"
     , o.toString()
     );
-  }
-  
-  @Test
-  public void orderTotalTest() {
-    Order o = new Order(0, 2, "Joao da Silva", "(16)99999-9999", 5);
-    
-    o.setOrder_total(5.5f);
-    
-    assertEquals(5.5f, o.getOrder_total());
-  }
-  
+
+    assertEquals(500f, o.getOrder_total());
+  } 
 }

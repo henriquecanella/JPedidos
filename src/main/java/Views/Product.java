@@ -257,10 +257,15 @@ public class Product extends javax.swing.JFrame {
     private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
         int row = jTableProducts.getSelectedRow();
         String id = jTableProducts.getValueAt(row, 0).toString();
+        String name = jTableProducts.getValueAt(row, 1).toString();
+        String description = jTableProducts.getValueAt(row, 2).toString();
 
         Models.Product product = new Models.Product();
 
         product.setProduct_id(Integer.parseInt(id));
+        product.setProduct_name(name);
+        product.setProduct_description(description);
+        
         productsDAO.deleteProduct(product);
         this.refreshProductsTable("delete");
         this.clearFields();

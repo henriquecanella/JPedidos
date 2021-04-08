@@ -5,19 +5,64 @@
  */
 package Views;
 
+import Controllers.ProductDAO;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Pedro
  */
 public class Product extends javax.swing.JFrame {
-
+    ProductDAO productsDAO = new ProductDAO();
     /**
      * Creates new form Product
      */
     public Product() {
         initComponents();
+        this.refreshProductsTable("init");
     }
 
+    public void refreshProductsTable(String mode) {
+        DefaultTableModel model = (DefaultTableModel) jTableProducts.getModel();
+        ArrayList<Models.Product> productsList = productsDAO.listProducts();
+        // int rows = model.getRowCount();
+
+        model.setRowCount(0);
+        model.getDataVector().removeAllElements();
+        model.fireTableDataChanged();
+
+        for (int i = 0; i < productsList.size(); i++) {
+            model.addRow(new Object[]{
+                productsList.get(i).getProduct_id(),
+                productsList.get(i).getProduct_name(),
+                productsList.get(i).getProduct_description(),
+                productsList.get(i).getProduct_price(),
+            });
+        }
+
+        productsList.clear();
+    }
+
+    public float validatesPrice(String price) {
+        float priceFloat = 0;
+
+        try {
+            priceFloat = Float.parseFloat(price);
+            
+            return priceFloat;
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "This price is invalid!", "Invalid Price!", JOptionPane.ERROR_MESSAGE);
+            return -1;
+        }
+    }
+
+    public void clearFields() {
+        jTextFieldProdName.setText("");
+        jTextFieldPrice.setText("");
+        jTextAreaDesc.setText("");
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -39,9 +84,9 @@ public class Product extends javax.swing.JFrame {
         jTextFieldProdName = new javax.swing.JTextField();
         jLabelProdDescription = new javax.swing.JLabel();
         jLabelProdName1 = new javax.swing.JLabel();
-        jTextFieldProdName1 = new javax.swing.JTextField();
+        jTextFieldPrice = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        jTextAreaDesc = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -74,20 +119,20 @@ public class Product extends javax.swing.JFrame {
 
         jTableProducts.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Name", "Description", "Price"
+                "ID", "Name", "Description", "Price"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -122,15 +167,15 @@ public class Product extends javax.swing.JFrame {
         jLabelProdName1.setForeground(new java.awt.Color(97, 97, 97));
         jLabelProdName1.setText("Price (R$)");
 
-        jTextFieldProdName1.addActionListener(new java.awt.event.ActionListener() {
+        jTextFieldPrice.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldProdName1ActionPerformed(evt);
+                jTextFieldPriceActionPerformed(evt);
             }
         });
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane3.setViewportView(jTextArea1);
+        jTextAreaDesc.setColumns(20);
+        jTextAreaDesc.setRows(5);
+        jScrollPane3.setViewportView(jTextAreaDesc);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -144,7 +189,7 @@ public class Product extends javax.swing.JFrame {
                     .addComponent(jTextFieldProdName, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
                     .addComponent(jLabelProdDescription)
                     .addComponent(jLabelProdName1)
-                    .addComponent(jTextFieldProdName1, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE))
+                    .addComponent(jTextFieldPrice, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE))
                 .addContainerGap(40, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -161,7 +206,7 @@ public class Product extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabelProdName1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextFieldProdName1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jTextFieldPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(40, Short.MAX_VALUE))
         );
 
@@ -210,24 +255,76 @@ public class Product extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
-        // TODO add your handling code here:
+        int row = jTableProducts.getSelectedRow();
+        String id = jTableProducts.getValueAt(row, 0).toString();
+
+        Models.Product product = new Models.Product();
+
+        product.setProduct_id(Integer.parseInt(id));
+        productsDAO.deleteProduct(product);
+        this.refreshProductsTable("delete");
+        this.clearFields();
+        JOptionPane.showMessageDialog(null, "The product was successfully deleted!", "Success", JOptionPane.PLAIN_MESSAGE);
     }//GEN-LAST:event_jButtonDeleteActionPerformed
 
     private void jButtonCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCreateActionPerformed
-        // TODO add your handling code here:
+        String name = jTextFieldProdName.getText();
+        String price = jTextFieldPrice.getText();
+        String description = jTextAreaDesc.getText();
+        float priceFloat = validatesPrice(price);
+
+        if (name.equals("") || price.equals("") || description.equals("")) {
+            JOptionPane.showMessageDialog(null, "Some fields require your attention!", "Fill in all the fields!", JOptionPane.ERROR_MESSAGE);
+        } else if (priceFloat <= 0) {
+            JOptionPane.showMessageDialog(null, "This price is invalid!", "Error!", JOptionPane.ERROR_MESSAGE);
+        } else {
+            Models.Product product = new Models.Product();
+
+            product.setProduct_name(name);
+            product.setProduct_price(priceFloat);
+            product.setProduct_description(description);
+            
+            productsDAO.createProduct(product);
+            JOptionPane.showMessageDialog(
+                null,
+                "The product was successfully created!",
+                "Success",
+                JOptionPane.PLAIN_MESSAGE
+            );
+            this.clearFields();
+            this.refreshProductsTable("add");
+        }
     }//GEN-LAST:event_jButtonCreateActionPerformed
 
     private void jButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateActionPerformed
-        // TODO add your handling code here:
+        int row = jTableProducts.getSelectedRow();
+        String id = jTableProducts.getValueAt(row, 0).toString();
+        String name = jTableProducts.getValueAt(row, 1).toString();
+        String description = jTableProducts.getValueAt(row, 2).toString();
+        String price = jTableProducts.getValueAt(row, 3).toString();
+
+        // ArrayList<Models.Product> productsList = productsDAO.listProducts();
+        
+        Models.Product product = new Models.Product(
+            Integer.parseInt(id),
+            name,
+            description,
+            Float.parseFloat(price)
+        );
+
+        productsDAO.updateProduct(product);
+        this.refreshProductsTable("update");
+        this.clearFields();
+        JOptionPane.showMessageDialog(null, "The product was successfully updated!", "Success", JOptionPane.PLAIN_MESSAGE);
     }//GEN-LAST:event_jButtonUpdateActionPerformed
 
     private void jTextFieldProdNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldProdNameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldProdNameActionPerformed
 
-    private void jTextFieldProdName1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldProdName1ActionPerformed
+    private void jTextFieldPriceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldPriceActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldProdName1ActionPerformed
+    }//GEN-LAST:event_jTextFieldPriceActionPerformed
 
     /**
      * @param args the command line arguments
@@ -277,8 +374,8 @@ public class Product extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTableProducts;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea jTextAreaDesc;
+    private javax.swing.JTextField jTextFieldPrice;
     private javax.swing.JTextField jTextFieldProdName;
-    private javax.swing.JTextField jTextFieldProdName1;
     // End of variables declaration//GEN-END:variables
 }

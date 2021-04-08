@@ -128,14 +128,20 @@
             <Component class="javax.swing.JTable" name="jTableProducts">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="3" rowCount="4">
-                    <Column editable="false" title="Name" type="java.lang.String"/>
-                    <Column editable="false" title="Description" type="java.lang.Object"/>
-                    <Column editable="false" title="Price" type="java.lang.Object"/>
+                  <Table columnCount="4" rowCount="4">
+                    <Column editable="false" title="ID" type="java.lang.String"/>
+                    <Column editable="true" title="Name" type="java.lang.String"/>
+                    <Column editable="true" title="Description" type="java.lang.String"/>
+                    <Column editable="true" title="Price" type="java.lang.String"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>
@@ -180,7 +186,7 @@
                       <Component id="jTextFieldProdName" alignment="0" pref="292" max="32767" attributes="0"/>
                       <Component id="jLabelProdDescription" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabelProdName1" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="jTextFieldProdName1" alignment="0" pref="292" max="32767" attributes="0"/>
+                      <Component id="jTextFieldPrice" alignment="0" pref="292" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace pref="40" max="32767" attributes="0"/>
               </Group>
@@ -200,7 +206,7 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jLabelProdName1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jTextFieldProdName1" min="-2" pref="27" max="-2" attributes="0"/>
+                  <Component id="jTextFieldPrice" min="-2" pref="27" max="-2" attributes="0"/>
                   <EmptySpace pref="40" max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -245,9 +251,9 @@
             <Property name="text" type="java.lang.String" value="Price (R$)"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextFieldProdName1">
+        <Component class="javax.swing.JTextField" name="jTextFieldPrice">
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextFieldProdName1ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextFieldPriceActionPerformed"/>
           </Events>
         </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane3">
@@ -257,7 +263,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTextArea" name="jTextArea1">
+            <Component class="javax.swing.JTextArea" name="jTextAreaDesc">
               <Properties>
                 <Property name="columns" type="int" value="20"/>
                 <Property name="rows" type="int" value="5"/>

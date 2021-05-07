@@ -5,6 +5,7 @@
  */
 package Views;
 
+import Controllers.CustomerDAO;
 import Controllers.OrderDAO;
 import Controllers.ProductDAO;
 import java.awt.Component;
@@ -27,8 +28,11 @@ public class Order extends javax.swing.JFrame {
     ArrayList<JTextField> fieldsArr = new ArrayList<JTextField>();
     ProductDAO productController = new ProductDAO();
     OrderDAO orderController = new OrderDAO();
+    CustomerDAO customerController = new CustomerDAO();
     ArrayList<Models.Product> productsList = productController.listProducts();
+    ArrayList<Models.Customer> customerList = customerController.listCustomers();
     private String userId = "";
+    private int customerId;
     
     /**
      * Creates new form PrototipoTelaPedidos
@@ -40,6 +44,7 @@ public class Order extends javax.swing.JFrame {
         System.out.println("userId: " + userId);
         initComponents();        
         insertProduct(productsList);
+        populateCustomers(customerList);
     }
 
     public float calculateTotalPrice() {
@@ -58,6 +63,14 @@ public class Order extends javax.swing.JFrame {
 
         this.jLabelTotalResult.setText(String.valueOf(total));
         return total;
+    }
+    
+    public void populateCustomers(ArrayList<Models.Customer> customersList) {
+        if (customersList.size() > 0) {
+            for (int i = 0; i < customersList.size(); i++) {
+                jComboBoxCustomerName.addItem(customersList.get(i).getCustomer_name());
+            }
+        }
     }
 
     public void insertProduct(ArrayList<Models.Product> productsList) {
@@ -99,13 +112,10 @@ public class Order extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTextFieldCustomerName = new javax.swing.JTextField();
-        jTextFieldCustomerPhone = new javax.swing.JTextField();
         jButtonSaveOrder = new javax.swing.JButton();
         jLabelTotal = new javax.swing.JLabel();
         jLabelTotalResult = new javax.swing.JLabel();
         jLabelCustomerName = new javax.swing.JLabel();
-        jLabelCustomerPhone = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator2 = new javax.swing.JSeparator();
         jButtonCalculate = new javax.swing.JButton();
@@ -115,6 +125,7 @@ public class Order extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
+        jComboBoxCustomerName = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -134,9 +145,6 @@ public class Order extends javax.swing.JFrame {
 
         jLabelCustomerName.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabelCustomerName.setText("Nome do Cliente");
-
-        jLabelCustomerPhone.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabelCustomerPhone.setText("Telefone");
 
         jButtonCalculate.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButtonCalculate.setText("Calculate");
@@ -169,6 +177,12 @@ public class Order extends javax.swing.JFrame {
 
         jScrollPane1.setViewportView(jPanel1);
 
+        jComboBoxCustomerName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxCustomerNameActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -178,12 +192,10 @@ public class Order extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSeparator1)
                     .addComponent(jSeparator2)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldCustomerName, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabelCustomerName)
-                            .addComponent(jLabelCustomerPhone)
-                            .addComponent(jTextFieldCustomerPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabelTotal)
                                 .addGap(18, 18, 18)
@@ -191,9 +203,9 @@ public class Order extends javax.swing.JFrame {
                                 .addGap(28, 28, 28)
                                 .addComponent(jButtonCalculate, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButtonSaveOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 202, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jButtonSaveOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jComboBoxCustomerName, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 202, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -202,12 +214,8 @@ public class Order extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabelCustomerName)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextFieldCustomerName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(16, 16, 16)
-                .addComponent(jLabelCustomerPhone)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextFieldCustomerPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21)
+                .addComponent(jComboBoxCustomerName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(91, 91, 91)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
@@ -232,8 +240,11 @@ public class Order extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCalculateActionPerformed
 
     private void jButtonSaveOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveOrderActionPerformed
-        String customerName = this.jTextFieldCustomerName.getText();
-        String customerPhone = this.jTextFieldCustomerPhone.getText();
+
+        String customerName = this.jComboBoxCustomerName.getSelectedItem().toString();
+        int customerId = customerController.getCustomerId(customerName);
+        //int customerId = 1;
+        System.out.println("ID CUSTOMER: " + customerId);
         float total = this.calculateTotalPrice();
 
         if (total <= 0) {
@@ -243,27 +254,12 @@ public class Order extends javax.swing.JFrame {
                 "Error!",
                 JOptionPane.ERROR_MESSAGE
             );
-        } else if (customerName.length() > 45 || customerPhone.length() > 45) {
-            JOptionPane.showMessageDialog(
-                null,
-                "Name and phone number must be a maximum of 45 characters each.",
-                "Invalid Customer!",
-                JOptionPane.ERROR_MESSAGE
-            );
-        } else if (customerName.equals("") || customerPhone.equals("")) {
-            JOptionPane.showMessageDialog(
-                null,
-                "You must provide a valid phone and name data!",
-                "Invalid Customer!",
-                JOptionPane.ERROR_MESSAGE
-            );
         } else {
             Models.Order order = new Models.Order();
             ArrayList<Models.Product> selectedProducts = new ArrayList<Models.Product>();
             
             // order.setOrder_amount(1);
-            order.setOrder_customer_name(customerName);
-            order.setOrder_customer_phone(customerPhone);
+            order.setCustomer_id(customerId);
             order.setOrder_total(total);
             order.setUser_id(Integer.parseInt(this.userId));
 
@@ -295,6 +291,10 @@ public class Order extends javax.swing.JFrame {
             // new ListOrders().refreshOrdersTable("refresh");
         }
     }//GEN-LAST:event_jButtonSaveOrderActionPerformed
+
+    private void jComboBoxCustomerNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxCustomerNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxCustomerNameActionPerformed
 
     /**
      * @param args the command line arguments
@@ -335,11 +335,11 @@ public class Order extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonCalculate;
     private javax.swing.JButton jButtonSaveOrder;
+    private javax.swing.JComboBox<String> jComboBoxCustomerName;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel jLabelCustomerName;
-    private javax.swing.JLabel jLabelCustomerPhone;
     private javax.swing.JLabel jLabelTotal;
     private javax.swing.JLabel jLabelTotalResult;
     private javax.swing.JPanel jPanel1;
@@ -347,8 +347,6 @@ public class Order extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JTextField jTextFieldCustomerName;
-    private javax.swing.JTextField jTextFieldCustomerPhone;
     // End of variables declaration//GEN-END:variables
 
 }

@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 import Models.OrderProduct;
+import java.util.Date;
 
 public class OrderTest {
   
@@ -11,16 +12,17 @@ public class OrderTest {
   @Test
   public void orderConstructorTest(){
     // Order o = new Order(0, 2, "Joao da Silva", "(16)99999-9999", 5);
-    Order o = new Order(1, "Joao da Silva", "99999-9999", 1, "open", "2021-03-25 10:10:10", "2021-03-25 13:30:38");
+
+    
+    Order o = new Order(1, 1, 1, "open", new Date(), new Date());
     
     assertEquals(
     "1\n" + 
-    "Joao da Silva\n" + 
-    "99999-9999\n" +
+    "1\n" + 
     "1\n" +
     "open\n" +
-    "2021-03-25 10:10:10\n" +
-    "2021-03-25 13:30:38\n"
+    new Date() + "\n" +
+    new Date() + "\n" 
     , o.toString()
     );
   }
@@ -30,22 +32,20 @@ public class OrderTest {
     Order o = new Order();
     
     o.setOrder_id(1);
-    o.setOrder_customer_name("Joao da Silva");
-    o.setOrder_customer_phone("99999-9999");
+    o.setUser_id(1);
+    o.setCustomer_id(1);
     o.setOrder_total(500f);
-    o.setUser_id(5);
     o.setOrder_status("closed");
-    o.setCreated_at("2021-03-25 10:10:10");
-    o.setClosed_at("2021-03-25 13:30:38");
+    o.setCreated_at(new Date());
+    o.setClosed_at(new Date());
     
     assertEquals(
     "1\n" + 
-    "Joao da Silva\n" + 
-    "99999-9999\n" +
-    "5\n" +
+    "1\n" + 
+    "1\n" +
     "closed\n" +
-    "2021-03-25 10:10:10\n" +
-    "2021-03-25 13:30:38\n"
+    new Date() + "\n" +
+    new Date() + "\n" 
     , o.toString()
     );
 

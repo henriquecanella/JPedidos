@@ -35,12 +35,23 @@ public class ListOrders extends javax.swing.JFrame {
         model.fireTableDataChanged();
 
         for (int i = 0; i < ordersList.size(); i++) {
+            System.out.println(ordersList.get(i));
+            String closedDate = "";
+            
+            if (ordersList.get(i).getClosed_at() == null) {
+                closedDate = "Não Fechado";
+            } else {
+                closedDate = ordersList.get(i).getClosed_at().toString();
+            }
+            
             model.addRow(new Object[]{
                 ordersList.get(i).getOrder_id(),
-                ordersList.get(i).getOrder_customer_name(),
-                ordersList.get(i).getOrder_customer_phone(),
+                ordersList.get(i).getCustomer_id(),
                 ordersList.get(i).getOrder_total(),
-                ordersList.get(i).getOrder_status()
+                ordersList.get(i).getOrder_status(),
+                ordersList.get(i).getCreated_at(),
+                closedDate
+                
                 // "Status Pendente..."
                 //ordersList.get(i).getUser_id(),
                 // ordersList.get(i).getOrder_amount(),
@@ -59,10 +70,14 @@ public class ListOrders extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableOrders = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel1.setText("List Orders");
 
         jScrollPane1.setBackground(new java.awt.Color(255, 255, 204));
 
@@ -71,11 +86,11 @@ public class ListOrders extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Customer", "Phone", "Total $", "Status"
+                "Order", "Customer", "Total $", "Status", "Created At", "Closed At"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -89,10 +104,18 @@ public class ListOrders extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 593, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(213, 213, 213)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 389, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 343, Short.MAX_VALUE))
         );
 
         pack();
@@ -134,6 +157,7 @@ public class ListOrders extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableOrders;
     // End of variables declaration//GEN-END:variables

@@ -32,22 +32,25 @@ public class OrderDAO {
     PreparedStatement pstm;
     ResultSet rs;
     ArrayList<Order> list = new ArrayList<>();
+    ArrayList<Order> listId = new ArrayList<>();
 
-    public void createOrder(Order order, Customer customer, ArrayList<Product> productList){
+    public void createOrder(Order order, ArrayList<Product> productList){
         try {
             JDBCUtil.init(config_file);
             connection = JDBCUtil.getConnection();
-            connection.setAutoCommit(false);
+            connection.setAutoCommit(true);
             
             java.sql.Timestamp today = new java.sql.Timestamp(new java.util.Date().getTime());
             
-            sql = "insert into orders(user_id, customer_id, order_total, order_status, created_at) values(?, ?, ?, ?, ?, ?)";
+            sql = "insert into orders(user_id, customer_id, order_total, order_status, created_at, closed_at) values(?, ?, ?, ?, ?, ?)";
             pstm = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            System.out.println(order);
             pstm.setInt(1, order.getUser_id());
-            pstm.setInt(2, customer.getCustomer_id());
+            pstm.setInt(2, order.getCustomer_id());
             pstm.setFloat(3, order.getOrder_total());
             pstm.setString(4, "opened");
             pstm.setTimestamp(5, today);
+            pstm.setTimestamp(6, null);
             pstm.execute();
 
             ResultSet rs = pstm.getGeneratedKeys();
@@ -97,7 +100,8 @@ public class OrderDAO {
                 order.setOrder_id(rs.getInt("order_id"));
                 order.setCustomer_id(rs.getInt("customer_id"));
                 order.setOrder_total(rs.getFloat("order_total"));
-
+                order.setCreated_at(rs.getDate("created_at"));
+                order.setClosed_at(rs.getDate("closed_at"));
                 list.add(order);
             }
 

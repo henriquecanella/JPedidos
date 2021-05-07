@@ -26,6 +26,7 @@ public class CustomerDAO {
     private static Connection connection = null;
     
     ArrayList<Customer> list = new ArrayList<>();
+    ArrayList<Customer> listId = new ArrayList<>();
     
     public void CreateCustomer (Customer customer) {
         String sql = "INSERT INTO customers (customer_name, customer_phone, customer_address) VALUES (?,?,?)";
@@ -33,7 +34,7 @@ public class CustomerDAO {
         try {
             JDBCUtil.init(config_file);
             connection = JDBCUtil.getConnection();
-            connection.setAutoCommit(false);
+            connection.setAutoCommit(true);
             
             PreparedStatement pstm = connection.prepareStatement(sql);
             pstm.setString(1, customer.getCustomer_name());
@@ -58,7 +59,7 @@ public class CustomerDAO {
         try {
             JDBCUtil.init(config_file);
             connection = JDBCUtil.getConnection();
-            connection.setAutoCommit(false);
+            connection.setAutoCommit(true);
 
             PreparedStatement pstm = connection.prepareStatement(sql);
             ResultSet rs = pstm.executeQuery();
@@ -93,13 +94,13 @@ public class CustomerDAO {
         try {
             JDBCUtil.init(config_file);
             connection = JDBCUtil.getConnection();
-            connection.setAutoCommit(false);
+            connection.setAutoCommit(true);
 
             PreparedStatement pstm = connection.prepareStatement(sql);
             pstm.setString(1, customer.getCustomer_name());
             pstm.setString(2, customer.getCustomer_phone());
             pstm.setString(3, customer.getCustomer_address());
-            
+            pstm.setInt(4, customer.getCustomer_id());
             pstm.execute();
             pstm.close();
             
@@ -120,7 +121,7 @@ public class CustomerDAO {
         try {     
             JDBCUtil.init(config_file);
             connection = JDBCUtil.getConnection();
-            connection.setAutoCommit(false);
+            connection.setAutoCommit(true);
 
             PreparedStatement pstm = connection.prepareStatement(sql);
             pstm.setInt(1, customer.getCustomer_id());
@@ -134,6 +135,36 @@ public class CustomerDAO {
             System.out.println("Falha ao carregar o arquivo de configuração." + erro);
         } catch (SQLException erro) {
             System.out.println("Falha na conexao, comando sql = " + erro);
+        }
+    }
+    
+    public int getCustomerId (String customerName) {
+        String sql = "select customer_id from customers where customer_name = ?";
+        int id = -1;
+        try {     
+            JDBCUtil.init(config_file);
+            connection = JDBCUtil.getConnection();
+            connection.setAutoCommit(false);
+
+            PreparedStatement pstm = connection.prepareStatement(sql);
+            pstm.setString(1, customerName);
+            ResultSet rs = pstm.executeQuery();
+            
+            if (rs.next()) {
+                id = rs.getInt("customer_id");
+            }
+            
+            return id;
+            
+        } catch (ClassNotFoundException erro) {
+            System.out.println("Falha ao carregar o driver JDBC." + erro);
+            return -1;
+        } catch (IOException erro) {
+            System.out.println("Falha ao carregar o arquivo de configuração." + erro);
+            return -1;
+        } catch (SQLException erro) {
+            System.out.println("Falha na conexao, comando sql = " + erro);
+            return -1;
         }
     }
 }

@@ -5,8 +5,10 @@
  */
 package Views;
 
+import Controllers.CustomerDAO;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.util.ArrayList;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -31,10 +33,12 @@ public class Central extends javax.swing.JFrame {
             } else if (userRole.toLowerCase().equals("employee")) {
                 Order newOrderScreen = new Order(userId);
                 ListOrders listOrdersScreen = new ListOrders();
+                Customer newCustomerScreen = new Customer();
 
                 newOrderScreen.setLayout(new BorderLayout());
                 this.jTabbedPane.addTab("New Order", newOrderScreen.getContentPane());
                 this.jTabbedPane.addTab("List Orders", listOrdersScreen.getContentPane());
+                this.jTabbedPane.addTab("Manage Customers", newCustomerScreen.getContentPane());
                 // this.jTabbedPane.getTabComponentAt(0).setSize(485, 388);
                 // .setSize(485, 388)
                 
@@ -46,6 +50,14 @@ public class Central extends javax.swing.JFrame {
 
                             if (pane.getTitleAt(pane.getSelectedIndex()).equals("List Orders")) {
                                 listOrdersScreen.refreshOrdersTable("refresh");
+                            }
+                            else if (pane.getTitleAt(pane.getSelectedIndex()).equals("New Order")) {
+                                CustomerDAO customerController = new CustomerDAO();
+                                ArrayList<Models.Customer> customerList = customerController.listCustomers();
+                                newOrderScreen.populateCustomers(customerList);
+                            }
+                            else if (pane.getTitleAt(pane.getSelectedIndex()).equals("Manage Customers")) {
+                                newCustomerScreen.refreshProductsTable("refresh");
                             }
                             // System.out.println("Selected pane: " + pane.getTitleAt(pane.getSelectedIndex()));
                             // System.out.println("Selected paneNo : " + pane.getSelectedIndex());

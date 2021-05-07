@@ -17,8 +17,7 @@ public class OrderDAOTest {
 		Order o = new Order();
 		ArrayList<Product> p_list = new ArrayList<>();
 
-		o.setOrder_customer_name("Customer1");
-		o.setOrder_customer_phone("(16)99999-9999");
+		o.setCustomer_id(1);
 		o.setUser_id(1);
 		o.setOrder_total(5.55f);
 		
@@ -33,8 +32,7 @@ public class OrderDAOTest {
 
     Product p = new Product();
 
-		o.setOrder_customer_name("Customer1");
-		o.setOrder_customer_phone("(16)99999-9999");
+		o.setCustomer_id(1);
 		o.setUser_id(1);
 		o.setOrder_total(5.55f);
 

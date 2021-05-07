@@ -5,6 +5,8 @@
  */
 package Models;
 
+import java.util.Date;
+
 /**
  *
  * @author henrique
@@ -16,13 +18,13 @@ public class Order {
     private int customer_id;
     private float order_total;
     private String order_status;
-    private String created_at;
-    private String closed_at;
+    private Date created_at;
+    private Date closed_at;
     
     public Order(){
     }
     
-    public Order(int id, int user_id, int customer_id, String status, String created_at, String closed_at){
+    public Order(int id, int user_id, int customer_id, String status, Date created_at, Date closed_at){
         this.order_id = id;
         this.user_id = user_id;
         this.customer_id = customer_id;
@@ -61,11 +63,11 @@ public class Order {
         return order_status;
     }
 
-    public String getCreated_at() {
+    public Date getCreated_at() {
         return created_at;
     }
 
-    public String getClosed_at() {
+    public Date getClosed_at() {
         return closed_at;
     }
 
@@ -89,11 +91,11 @@ public class Order {
         this.order_status = order_status;
     }
 
-    public void setCreated_at(String created_at) {
+    public void setCreated_at(Date created_at) {
         this.created_at = created_at;
     }
 
-    public void setClosed_at(String closed_at) {
+    public void setClosed_at(Date closed_at) {
         this.closed_at = closed_at;
     }
     
